@@ -140,7 +140,7 @@ export function Home() {
                     </svg>
                   </div>
                 </div>
-                <h1 className="text-2xl font-semibold font-sans text-foreground">What is the next task?</h1>
+                <h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte Law Research Assistant</h1>
               </div>
               
               <div className="w-full">
