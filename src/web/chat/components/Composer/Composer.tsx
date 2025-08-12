@@ -965,7 +965,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
               </div>
             ) : (
               /* Idle State: Show mic button */
-              isAudioSupported && (
+              false && isAudioSupported && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
