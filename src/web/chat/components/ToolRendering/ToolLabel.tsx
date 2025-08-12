@@ -115,6 +115,57 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
       
       case 'exit_plan_mode':
         return <span className="font-semibold">Plan</span>;
+
+      // Terracotta MCP Tools
+
+      case 'mcp__terracotta-law__search_ordinances':
+        return (
+          <>
+            <span className="font-semibold">Searching through ordinances/regulations...</span>
+            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+          </>
+        );
+
+      case 'mcp__terracotta-law__search_case_law':
+        return (
+          <>
+            <span className="font-semibold">Searching through case law...</span>
+            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+          </>
+        );
+
+      case 'mcp__terracotta-law__search_practice_directions':
+        return (
+          <>
+            <span className="font-semibold">Searching through practice directions...</span>
+            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+          </>
+        );
+
+      case 'mcp__terracotta-law__get_ordinance_text':
+        return (
+          <>
+            <span className="font-semibold">Retrieving the full ordinance/regulation...</span>
+            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+          </>
+        );
+
+      case 'mcp__terracotta-law__get_case_judgement':
+        return (
+          <>
+            <span className="font-semibold">Retrieving case judgement...</span>
+            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+          </>
+        );
+
+      case 'mcp__terracotta-law__get_practice_direction_content':
+        return (
+          <>
+            <span className="font-semibold">Retrieving practice directions...</span>
+            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+          </>
+        );
+      
       
       default:
         // Fallback for any unspecified tool

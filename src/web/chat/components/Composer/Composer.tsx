@@ -1057,7 +1057,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  <DropdownSelector
+                  {/* <DropdownSelector
                     options={[
                       { value: 'default', label: 'Ask', description: 'Ask before making changes' },
                       { value: 'acceptEdits', label: 'Auto', description: 'Apply edits automatically' },
@@ -1091,7 +1091,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
                         <ChevronDown size={14} />
                       </Button>
                     )}
-                  />
+                  /> */}
                 </div>
               </div>
             )}

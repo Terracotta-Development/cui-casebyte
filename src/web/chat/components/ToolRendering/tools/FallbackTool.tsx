@@ -34,7 +34,8 @@ export function FallbackTool({ toolName, input, result }: FallbackToolProps) {
               size={12} 
               className={`transition-transform ${isExpanded ? 'rotate-90' : ''}`} 
             />
-            {toolName} completed
+            {/* {toolName} completed */}
+            Expand results
           </div>
         </CollapsibleTrigger>
         
