@@ -32,7 +32,7 @@ export function Header() {
           {/* Navigation */}
           <nav className="flex items-center gap-2 ml-auto">
             {/* Settings Button */}
-            <TooltipProvider>
+            {/* <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -49,7 +49,7 @@ export function Header() {
                   <p>Settings</p>
                 </TooltipContent>
               </Tooltip>
-            </TooltipProvider>
+            </TooltipProvider> */}
           </nav>
         </div>
       </header>
