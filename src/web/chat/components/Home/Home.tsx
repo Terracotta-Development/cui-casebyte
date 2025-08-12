@@ -182,13 +182,13 @@ export function Home() {
                 />
               </div>
 
-              <TaskTabs 
+              {/* <TaskTabs 
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
-              />
+              /> */}
             </div>
 
-            <TaskList 
+            {/* <TaskList 
               conversations={conversations}
               loading={loading}
               loadingMore={loadingMore}
@@ -196,7 +196,7 @@ export function Home() {
               error={error}
               activeTab={activeTab}
               onLoadMore={(filters) => loadMoreConversations(filters)}
-            />
+            /> */}
           </div>
         </div>
       </main>
