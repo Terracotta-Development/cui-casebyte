@@ -149,9 +149,9 @@ export function Home() {
                   workingDirectory={recentWorkingDirectory}
                   onSubmit={handleComposerSubmit}
                   isLoading={isSubmitting}
-                  placeholder="Describe your task"
+                  placeholder="Describe your legal query here"
                   showDirectorySelector={true}
-                  showModelSelector={true}
+                  showModelSelector={false}
                   enableFileAutocomplete={true}
                   recentDirectories={recentDirectories}
                   getMostRecentWorkingDirectory={getMostRecentWorkingDirectory}
