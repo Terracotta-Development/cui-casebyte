@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { CornerDownRight } from 'lucide-react';
-import type { ContentBlockParam } from '@anthropic-ai/sdk/resources/messages/messages';
 import type { ChatMessage, ToolResult } from '../../types';
 import { ReadTool } from './tools/ReadTool';
 import { EditTool } from './tools/EditTool';
@@ -12,6 +11,7 @@ import { WebTool } from './tools/WebTool';
 import { TaskTool } from './tools/TaskTool';
 import { PlanTool } from './tools/PlanTool';
 import { FallbackTool } from './tools/FallbackTool';
+import { TerracottaTool } from './tools/TerracottaTool';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/web/chat/components/ui/collapsible';
 
 interface ToolContentProps {
@@ -178,6 +178,16 @@ export function ToolContent({
       );
     
     default:
+      if (toolName.startsWith('mcp__terracotta-law__')) {
+        return (
+          <TerracottaTool
+            toolName={toolName}
+            input={toolInput}
+            result={resultContent}
+          />
+        );
+      }
+      
       return (
         <FallbackTool
           toolName={toolName}

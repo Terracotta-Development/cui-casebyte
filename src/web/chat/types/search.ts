@@ -112,7 +112,7 @@ export interface GetPracticeDirectionContentInput {
 	max_chars?: number;
 }
 
-export interface GetPracticeDirectionsResponse {
+export interface GetPracticeDirectionContentResponse {
 	pd_id: string;
 	pd_no: string;
 	pd_title: string;
