@@ -119,3 +119,6 @@ export interface StreamStatus {
 export interface ConversationSummaryWithLiveStatus extends ConversationSummary {
   liveStatus?: StreamStatus;
 }
+
+// Domain-specific types
+export * from './search';
