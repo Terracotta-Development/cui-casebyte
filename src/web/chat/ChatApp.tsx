@@ -6,28 +6,31 @@ import { ConversationView } from './components/ConversationView/ConversationView
 import { ConversationsProvider } from './contexts/ConversationsContext';
 import { StreamStatusProvider } from './contexts/StreamStatusContext';
 import { PreferencesProvider } from './contexts/PreferencesContext';
+import { AuthProvider } from './contexts/AuthContext';
 import './styles/global.css';
 
 function ChatApp() {
   return (
-    <PreferencesProvider>
-      <StreamStatusProvider>
-        <ConversationsProvider>
-          <Routes>
-            <Route path="/" element={
-              <Layout>
-                <Home />
-              </Layout>
-            } />
-            <Route path="/c/:sessionId" element={
-              <Layout>
-                <ConversationView />
-              </Layout>
-            } />
-          </Routes>
-        </ConversationsProvider>
-      </StreamStatusProvider>
-    </PreferencesProvider>
+    <AuthProvider>
+      <PreferencesProvider>
+        <StreamStatusProvider>
+          <ConversationsProvider>
+            <Routes>
+              <Route path="/" element={
+                <Layout>
+                  <Home />
+                </Layout>
+              } />
+              <Route path="/c/:sessionId" element={
+                <Layout>
+                  <ConversationView />
+                </Layout>
+              } />
+            </Routes>
+          </ConversationsProvider>
+        </StreamStatusProvider>
+      </PreferencesProvider>
+    </AuthProvider>
   );
 }
 
