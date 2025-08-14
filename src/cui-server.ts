@@ -38,6 +38,8 @@ import { createWorkingDirectoriesRoutes } from './routes/working-directories.rou
 import { createConfigRoutes } from './routes/config.routes.js';
 import { createGeminiRoutes } from './routes/gemini.routes.js';
 import { createNotificationsRoutes } from './routes/notifications.routes.js';
+import { createAuthRoutes } from './routes/auth.routes.js';// Add auth middleware routes for magic link login
+
 import { errorHandler } from './middleware/error-handler.js';
 import { requestLogger } from './middleware/request-logger.js';
 import { createCorsMiddleware } from './middleware/cors-setup.js';
@@ -153,6 +155,9 @@ export class CUIServer {
   async initialize(): Promise<void> {
     this.logger.debug('Initialize method called');
     try {
+      // Magic link add trust proxy setting (add to cookies) to work properly
+      this.app.set('trust proxy', true);
+
       // Initialize configuration first
       this.logger.debug('Initializing configuration');
       await this.configService.initialize();
@@ -429,6 +434,9 @@ export class CUIServer {
   private setupMiddleware(): void {
     this.app.use(createCorsMiddleware());
     this.app.use(express.json({ limit: '10mb' }));
+    
+    // Auth routes - must be before static file serving
+    this.app.use('/auth', createAuthRoutes());
     
     // Static file serving
     const isDev = process.env.NODE_ENV === 'development';
