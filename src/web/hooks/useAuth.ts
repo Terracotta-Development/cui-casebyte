@@ -26,7 +26,7 @@ export async function getSession(): Promise<AuthSession | null> {
     }
     
     const session = await response.json();
-    return session.user ? session : null;
+    return session?.user ? session : null;
   } catch (error) {
     console.error('Failed to get session:', error);
     return null;
