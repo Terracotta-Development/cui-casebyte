@@ -435,6 +435,9 @@ export class CUIServer {
     this.app.use(createCorsMiddleware());
     this.app.use(express.json({ limit: '10mb' }));
     
+    // Auth routes - must be before static file serving
+    this.app.use('/auth', createAuthRoutes());
+    
     // Static file serving
     const isDev = process.env.NODE_ENV === 'development';
     if (!isDev) {
@@ -456,9 +459,6 @@ export class CUIServer {
   }
 
   private setupRoutes(): void {
-    // Magic link auth routes
-    this.app.use('/auth', createAuthRoutes());
-
     // System routes (includes health check) - before auth
     this.app.use('/api/system', createSystemRoutes(this.processManager, this.historyReader));
     this.app.use('/', createSystemRoutes(this.processManager, this.historyReader)); // For /health at root
