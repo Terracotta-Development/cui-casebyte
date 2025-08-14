@@ -28,20 +28,15 @@ class ApiService {
     // Log request
     console.log(`[API] ${method} ${fullUrl}`, options?.body ? JSON.parse(options.body as string) : '');
     
-    // Get auth token for Bearer authorization
-    const authToken = getAuthToken();
+    // Use session-based auth - cookies are sent automatically
     const headers = new Headers(options?.headers as HeadersInit);
     headers.set('Content-Type', 'application/json');
-    
-    // Add Bearer token if available
-    if (authToken) {
-      headers.set('Authorization', `Bearer ${authToken}`);
-    }
     
     try {
       const response = await fetch(fullUrl, {
         ...options,
         headers,
+        credentials: 'include' // Include cookies for session auth
       });
 
       const data = await response.json();
@@ -241,20 +236,11 @@ class ApiService {
     });
   }
 
-  // For endpoints that need direct fetch with auth (like SSE streams)
+  // For endpoints that need direct fetch with session auth (like SSE streams)
   async fetchWithAuth(url: string, options?: RequestInit): Promise<Response> {
-    const authToken = getAuthToken();
-    const headers: Record<string, string> = {
-      ...options?.headers as Record<string, string>,
-    };
-    
-    if (authToken) {
-      headers.Authorization = `Bearer ${authToken}`;
-    }
-    
     return fetch(url, {
       ...options,
-      headers,
+      credentials: 'include' // Include cookies for session auth
     });
   }
 }
