@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useConversations } from '../../contexts/ConversationsContext';
 import { api } from '../../services/api';
-import { Header } from './Header';
 import { Composer, ComposerRef } from '@/web/chat/components/Composer';
 import { TaskTabs } from './TaskTabs';
 import { TaskList } from './TaskList';
@@ -120,8 +119,6 @@ export function Home() {
 
   return (
     <div className="flex flex-col h-screen w-full bg-background">
-      <Header />
-
       <main className="relative flex flex-1 w-full h-full overflow-hidden transition-all duration-[250ms] z-[1]">
         <div className="flex flex-col h-full w-full">
           <div className="z-0 mx-auto flex flex-col w-full max-w-3xl h-full">

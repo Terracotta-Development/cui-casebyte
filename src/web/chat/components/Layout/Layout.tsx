@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAuth } from '../../../hooks/useAuth';
+import Header from './Header';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="flex flex-col w-full h-screen overflow-hidden bg-background relative">
+        // TODO: merge the code below into Header below
       {/* Header with user info and logout */}
       <header className="flex justify-between items-center p-4 border-b border-gray-200 bg-white">
         <h1 className="text-lg font-semibold">CUI - Common Agent UI</h1>
@@ -27,7 +29,7 @@ export function Layout({ children }: LayoutProps) {
           </button>
         </div>
       </header>
-      
+      <Header />
       <main className="flex-1 flex flex-col overflow-hidden h-full">
         {children}
       </main>
