@@ -1,41 +1,59 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { getAuthToken, setAuthToken } from '../../hooks/useAuth';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (email: string) => void;
+  login: (email: string) => Promise<void>;
+  signup: (email: string) => Promise<void>;
   logout: () => void;
   userEmail: string | null;
+  token: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(!!getAuthToken());
-  const [userEmail, setUserEmail] = useState<string | null>(
-    localStorage.getItem('user-email')
-  );
+  const [token, setToken] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!token);
 
-  const login = (email: string) => {
-    // TODO: Implement actual authentication logic
-    // For now, we'll simulate successful login by setting a mock token
-    const mockToken = 'a'.repeat(32); // Mock 32-character hex token
-    setAuthToken(mockToken);
-    localStorage.setItem('user-email', email);
+  useEffect(() => {
+    const storedToken = localStorage.getItem('authToken');
+    const storedEmail = localStorage.getItem('authUser');
+    if (storedToken) setToken(storedToken);
+    if (storedEmail) setUserEmail(storedEmail);
+  }, []);
+
+  const login = useCallback(async (email: string) => {
+    console.log("LOGGING IN");
+    // Replace with real API call
+    const fakeToken = 'token_' + email;
+    setToken(fakeToken);
     setUserEmail(email);
     setIsAuthenticated(true);
-  };
+    localStorage.setItem('authToken', fakeToken);
+    localStorage.setItem('authUser', email);
+  }, []);
 
-  const logout = () => {
-    // Clear auth token cookie
-    document.cookie = 'cui-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-    localStorage.removeItem('user-email');
+  const signup = useCallback(async (email: string) => {
+    // Replace with real API call
+    const fakeToken = 'token_' + email;
+    setToken(fakeToken);
+    setUserEmail(email);
+    setIsAuthenticated(true);
+    localStorage.setItem('authToken', fakeToken);
+    localStorage.setItem('authUser', email);
+  }, []);
+
+  const logout = useCallback(() => {
+    setToken(null);
     setUserEmail(null);
     setIsAuthenticated(false);
-  };
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authUser');
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, userEmail }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, signup, logout, userEmail, token }}>
       {children}
     </AuthContext.Provider>
   );
@@ -43,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuthContext() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuthContext must be used within an AuthProvider');
   }
   return context;

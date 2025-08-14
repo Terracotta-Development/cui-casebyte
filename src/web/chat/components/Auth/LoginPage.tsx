@@ -2,32 +2,27 @@ import React, { useState } from 'react';
 import { Button } from '@/web/chat/components/ui/button';
 import { Input } from '@/web/chat/components/ui/input';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-interface LoginPageProps {
-  onSwitchToSignup: () => void;
-  onBack: () => void;
-}
-
-export function LoginPage({ onSwitchToSignup, onBack }: LoginPageProps) {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuthContext();
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!email.trim()) return;
-    
     setIsLoading(true);
-    
     try {
-      // TODO: Implement actual login logic with backend
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      login(email);
-      onBack(); // Navigate back to main page after successful login
+      // TODO: implement actual login logic here
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await login(email);
+      navigate('/');
     } catch (error) {
       console.error('Login failed:', error);
-      // TODO: Show error message to user
+      setError('Login failed.');
     } finally {
       setIsLoading(false);
     }
@@ -40,7 +35,7 @@ export function LoginPage({ onSwitchToSignup, onBack }: LoginPageProps) {
           <h1 className="text-2xl font-semibold">Welcome back</h1>
           <p className="text-muted-foreground">Enter your email to sign in to your account</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Input
@@ -62,12 +57,13 @@ export function LoginPage({ onSwitchToSignup, onBack }: LoginPageProps) {
             {isLoading ? 'Signing in...' : 'Continue'}
           </Button>
         </form>
-        
-        <div className="text-center">
+
+      {error && <div className="error">{error}</div>}
+      <div className="text-center">
           <p className="text-sm text-muted-foreground">
             Don't have an account?{' '}
             <button
-              onClick={onSwitchToSignup}
+              onClick={() => navigate('/signup')}
               className="font-medium text-foreground hover:underline"
             >
               Sign up
@@ -75,15 +71,9 @@ export function LoginPage({ onSwitchToSignup, onBack }: LoginPageProps) {
           </p>
         </div>
         
-        <div className="text-center">
-          <button
-            onClick={onBack}
-            className="text-sm text-muted-foreground hover:underline"
-          >
-            ← Back to home
-          </button>
-        </div>
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;

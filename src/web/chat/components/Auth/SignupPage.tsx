@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { Button } from '@/web/chat/components/ui/button';
 import { Input } from '@/web/chat/components/ui/input';
 import { useAuthContext } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-interface SignupPageProps {
-  onSwitchToLogin: () => void;
-  onBack: () => void;
-}
-
-export function SignupPage({ onSwitchToLogin, onBack }: SignupPageProps) {
+const SignupPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuthContext();
+  const { signup } = useAuthContext();
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,15 +17,14 @@ export function SignupPage({ onSwitchToLogin, onBack }: SignupPageProps) {
     if (!email.trim()) return;
     
     setIsLoading(true);
-    
+
     try {
       // TODO: Implement actual signup logic with backend
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      login(email); // Auto-login after successful signup
-      onBack(); // Navigate back to main page after successful signup
-    } catch (error) {
-      console.error('Signup failed:', error);
-      // TODO: Show error message to user
+      await signup(email);
+      navigate('/');
+    } catch (err) {
+      setError('Signup failed');
     } finally {
       setIsLoading(false);
     }
@@ -40,7 +37,7 @@ export function SignupPage({ onSwitchToLogin, onBack }: SignupPageProps) {
           <h1 className="text-2xl font-semibold">Create your account</h1>
           <p className="text-muted-foreground">Enter your email to get started for free</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Input
@@ -62,28 +59,21 @@ export function SignupPage({ onSwitchToLogin, onBack }: SignupPageProps) {
             {isLoading ? 'Creating account...' : 'Continue'}
           </Button>
         </form>
-        
+        {error && <div className="error">{error}</div>}
         <div className="text-center">
           <p className="text-sm text-muted-foreground">
             Already have an account?{' '}
             <button
-              onClick={onSwitchToLogin}
+              onClick={() => navigate('/login')}
               className="font-medium text-foreground hover:underline"
             >
               Sign in
             </button>
           </p>
         </div>
-        
-        <div className="text-center">
-          <button
-            onClick={onBack}
-            className="text-sm text-muted-foreground hover:underline"
-          >
-            ← Back to home
-          </button>
-        </div>
       </div>
     </div>
   );
-}
+};
+
+export default SignupPage;
