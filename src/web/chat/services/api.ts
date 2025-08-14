@@ -12,7 +12,7 @@ import type {
   FileSystemListResponse,
   CommandsResponse,
 } from '../types';
-import { getAuthToken } from '../../hooks/useAuth';
+// Removed Bearer token import - now using session-based auth
 type GeminiHealthResponse = { status: 'healthy' | 'unhealthy'; message: string; apiKeyValid: boolean };
 
 class ApiService {
