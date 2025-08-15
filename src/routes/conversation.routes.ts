@@ -20,6 +20,7 @@ import { SessionInfoService } from '@/services/session-info-service.js';
 import { ConversationStatusManager } from '@/services/conversation-status-manager.js';
 import { createLogger } from '@/services/logger.js';
 import { ToolMetricsService } from '@/services/ToolMetricsService.js';
+import { createProductionSecurityConfig } from '@/config/security.js';
 
 export function createConversationRoutes(
   processManager: ClaudeProcessManager,
@@ -106,11 +107,12 @@ export function createConversationRoutes(
         }
       }
       
-      // Prepare config with previous messages if resuming
+      // Apply production security config and merge with request
+      const secureBaseConfig = createProductionSecurityConfig(req.body);
       const conversationConfig = {
-        ...req.body,
+        ...secureBaseConfig,
         previousMessages: previousMessages.length > 0 ? previousMessages : undefined,
-        permissionMode: req.body.permissionMode || inheritedPermissionMode
+        permissionMode: req.body.permissionMode || inheritedPermissionMode || 'strict'
       };
       
       const { streamingId, systemInit } = await processManager.startConversation(conversationConfig);
