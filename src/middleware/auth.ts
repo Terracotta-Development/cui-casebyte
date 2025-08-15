@@ -4,6 +4,43 @@ import { createLogger } from '@/services/logger.js';
 
 const logger = createLogger('AuthMiddleware');
 
+/**
+ * Check if request has a valid Auth.js session
+ */
+async function checkAuthJSSession(req: Request): Promise<{ isValid: boolean; user?: any }> {
+  try {
+    // Check for session cookie (Auth.js typically uses 'authjs.session-token' or similar)
+    const cookies = req.headers.cookie;
+    if (!cookies) {
+      return { isValid: false };
+    }
+
+    // Make an internal request to check the session
+    const sessionResponse = await fetch(`${req.protocol}://${req.get('host')}/auth/session`, {
+      headers: {
+        'Cookie': cookies,
+        'User-Agent': req.get('User-Agent') || 'Internal-Session-Check'
+      }
+    });
+
+    if (!sessionResponse.ok) {
+      return { isValid: false };
+    }
+
+    const session = await sessionResponse.json();
+    
+    // Auth.js returns { user: {...} } for valid sessions, or {} for invalid
+    if (session && session.user) {
+      return { isValid: true, user: session.user };
+    }
+
+    return { isValid: false };
+  } catch (error) {
+    logger.debug('Session check failed:', error);
+    return { isValid: false };
+  }
+}
+
 // Rate limiting storage (in-memory for simplicity)
 const rateLimitStore = new Map<string, { attempts: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW = 1000; // 1 second
@@ -68,7 +105,7 @@ function recordFailedAttempt(ip: string): void {
  */
 export function createAuthMiddleware(tokenOverride?: string): (req: Request, res: Response, next: NextFunction) => void {
   return (req: Request, res: Response, next: NextFunction): void => {
-    authMiddlewareImpl(req, res, next, tokenOverride);
+    authMiddlewareImpl(req, res, next, tokenOverride).catch(next);
   };
 }
 
@@ -78,10 +115,10 @@ export function createAuthMiddleware(tokenOverride?: string): (req: Request, res
  * Disabled in test environment unless ENABLE_AUTH_IN_TESTS is set
  */
 export function authMiddleware(req: Request, res: Response, next: NextFunction): void {
-  authMiddlewareImpl(req, res, next);
+  authMiddlewareImpl(req, res, next).catch(next);
 }
 
-function authMiddlewareImpl(req: Request, res: Response, next: NextFunction, tokenOverride?: string): void {
+async function authMiddlewareImpl(req: Request, res: Response, next: NextFunction, tokenOverride?: string): Promise<void> {
   // Skip auth in test environment unless explicitly enabled for auth tests
   if (process.env.NODE_ENV === 'test' && !process.env.ENABLE_AUTH_IN_TESTS) {
     next();
@@ -97,11 +134,19 @@ function authMiddlewareImpl(req: Request, res: Response, next: NextFunction, tok
   }
   
   try {
-    // Extract Bearer token from Authorization header
+    // First, check for Auth.js session
+    const sessionCheck = await checkAuthJSSession(req);
+    if (sessionCheck.isValid) {
+      logger.debug('Authentication successful via session', { ip: clientIp, user: sessionCheck.user?.email });
+      next();
+      return;
+    }
+
+    // Fallback to Bearer token auth (for backward compatibility)
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       recordFailedAttempt(clientIp);
-      logger.debug('Missing or invalid Authorization header', { ip: clientIp });
+      logger.debug('No valid session or Bearer token found', { ip: clientIp });
       res.status(401).json({ error: 'Unauthorized' });
       return;
     }
@@ -120,7 +165,7 @@ function authMiddlewareImpl(req: Request, res: Response, next: NextFunction, tok
     }
     
     // Token is valid, proceed
-    logger.debug('Authentication successful', { ip: clientIp });
+    logger.debug('Authentication successful via Bearer token', { ip: clientIp });
     next();
   } catch (error) {
     recordFailedAttempt(clientIp);
