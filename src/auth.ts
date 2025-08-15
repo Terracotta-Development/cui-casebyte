@@ -23,6 +23,36 @@ export const authConfig = {
     url: process.env.SUPABASE_URL,
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
   }),
+  callbacks: {
+    redirect({ url, baseUrl }) {
+      // In development, ensure users are always redirected to frontend (port 3000)
+      if (process.env.NODE_ENV === 'development') {
+        const frontendUrl = 'http://localhost:3000'; // update if using a different port.
+        
+        // If it's a relative URL, prepend the frontend URL
+        if (url.startsWith('/')) {
+          return `${frontendUrl}${url}`;
+        }
+        
+        // If it's already pointing to the frontend, use it as-is
+        if (url.startsWith(frontendUrl)) {
+          return url;
+        }
+        
+        // For any other URL, redirect to frontend home
+        return frontendUrl;
+      }
+      
+      // Production behavior - use default Auth.js logic
+      if (url.startsWith('/')) {
+        return `${baseUrl}${url}`;
+      }
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      return baseUrl;
+    }
+  }
 }
 
 // Export the configured ExpressAuth for use in routes
