@@ -15,6 +15,7 @@ import { FileSystemService } from './file-system-service.js';
 import { NotificationService } from './notification-service.js';
 import path from 'path';
 import { ClaudeRouterService } from './claude-router-service.js';
+import { getRestrictedEnvironment } from '@/config/security.js';
 
 // Get the directory of this module
 const __filename = fileURLToPath(import.meta.url);
@@ -501,13 +502,11 @@ export class ClaudeProcessManager extends EventEmitter {
       const systemInitPromise = this.waitForSystemInit(streamingId);
       
       // Add streamingId to environment for MCP server to use
-      // Filter out debugging-related environment variables that would cause 
-      // the VSCode debugger to attach to the Claude CLI child process
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { NODE_OPTIONS, VSCODE_INSPECTOR_OPTIONS, ...cleanEnv } = spawnConfig.env;
+      // Apply security restrictions to environment variables
+      const restrictedEnv = getRestrictedEnvironment(spawnConfig.env);
       
       const envWithStreamingId = {
-        ...cleanEnv,
+        ...restrictedEnv,
         CUI_STREAMING_ID: streamingId,
         PWD: spawnConfig.cwd,
         INIT_CWD: spawnConfig.cwd
