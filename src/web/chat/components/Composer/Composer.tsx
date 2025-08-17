@@ -628,22 +628,22 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
     // Detect autocomplete triggers
     const cursorPos = e.target.selectionStart;
     
-    // Check for slash command autocomplete first (higher priority)
-    const commandAutocompleteInfo = detectSlashCommandAutocomplete(newValue, cursorPos);
-    if (commandAutocompleteInfo && onFetchCommands) {
-      const suggestions = filterCommandSuggestions(commandAutocompleteInfo.query);
-      
-      setAutocomplete(prev => ({
-        isActive: true,
-        triggerIndex: commandAutocompleteInfo.triggerIndex,
-        query: commandAutocompleteInfo.query,
-        suggestions,
-        type: commandAutocompleteInfo.type,
-        // Keep focusedIndex if it's still valid, otherwise reset to -1 (no selection)
-        focusedIndex: prev.focusedIndex >= 0 && prev.focusedIndex < suggestions.length ? prev.focusedIndex : -1,
-      }));
-      return;
-    }
+    // Slash command autocomplete disabled for security
+    // const commandAutocompleteInfo = detectSlashCommandAutocomplete(newValue, cursorPos);
+    // if (commandAutocompleteInfo && onFetchCommands) {
+    //   const suggestions = filterCommandSuggestions(commandAutocompleteInfo.query);
+    //   
+    //   setAutocomplete(prev => ({
+    //     isActive: true,
+    //     triggerIndex: commandAutocompleteInfo.triggerIndex,
+    //     query: commandAutocompleteInfo.query,
+    //     suggestions,
+    //     type: commandAutocompleteInfo.type,
+    //     // Keep focusedIndex if it's still valid, otherwise reset to -1 (no selection)
+    //     focusedIndex: prev.focusedIndex >= 0 && prev.focusedIndex < suggestions.length ? prev.focusedIndex : -1,
+    //   }));
+    //   return;
+    // }
     
     // Check for file autocomplete if enabled
     if (enableFileAutocomplete) {
