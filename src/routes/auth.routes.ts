@@ -1,4 +1,4 @@
-import { expressAuth } from '@/auth'
+import { expressAuth } from '@/auth.js'
 import express from 'express'
 
 export function createAuthRoutes() {

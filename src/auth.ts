@@ -24,7 +24,7 @@ export const authConfig = {
     secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
   }),
   callbacks: {
-    redirect({ url, baseUrl }) {
+    redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
       // In development, ensure users are always redirected to frontend (port 3000)
       if (process.env.NODE_ENV === 'development') {
         const frontendUrl = 'http://localhost:3000'; // update if using a different port.
