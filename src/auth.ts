@@ -1,4 +1,3 @@
-"use server"
 import dotenv from 'dotenv'
 import { ExpressAuth } from "@auth/express"
 import { SupabaseAdapter } from "@auth/supabase-adapter"
