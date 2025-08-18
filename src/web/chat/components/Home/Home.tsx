@@ -137,7 +137,7 @@ export function Home() {
                     </svg>
                   </div>
                 </div>
-                <h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte Law Research Assistant</h1>
+                <a href="/"><h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte</h1></a>
               </div>
               
               <div className="w-full">

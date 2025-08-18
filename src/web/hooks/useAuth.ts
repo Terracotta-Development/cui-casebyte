@@ -34,20 +34,6 @@ export async function getSession(): Promise<AuthSession | null> {
 }
 
 /**
- * Sign out user by redirecting to Auth.js signout
- */
-export function signOut(): void {
-  window.location.href = '/auth/signout';
-}
-
-/**
- * Sign in user by redirecting to Auth.js signin
- */
-export function signIn(): void {
-  window.location.href = '/auth/signin';
-}
-
-/**
  * Hook for handling Auth.js session management
  */
 export function useAuth() {
@@ -69,6 +55,51 @@ export function useAuth() {
 
     checkSession();
   }, []);
+
+  /**
+   * Sign out user by calling Auth.js signout API directly
+   */
+  async function signOut(): Promise<boolean> {
+    setLoading(true);
+    try {
+      const response = await fetch('/auth/signout', {
+        method: 'POST',
+      });
+      console.log("SIGN OUT RESPONSE: ",response); // TODO: remove once debugged
+      if (!response.ok) {
+        console.error("Error in signing out");
+        return false;
+      }
+    } catch(error) {
+      console.error("Error in signing out:", error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+    return true;
+  }
+
+  /**
+   * Sign in user by calling Auth.js signin API directly
+   */
+  async function signIn(providerId: string, email: string): Promise<Response> {
+    const sanitizedEmail = email.trim();
+
+    const endpointUrl = '/auth/signin/'+providerId;
+
+    const response = await fetch(endpointUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        email: sanitizedEmail,
+        redirect: false,
+      }),
+    });
+
+    return response;
+  }
 
   return {
     session,

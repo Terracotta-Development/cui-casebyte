@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { Button } from '@/web/chat/components/ui/button';
 import { Input } from '@/web/chat/components/ui/input';
-import { useAuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/web/hooks/useAuth';
+import { providerMap, Provider } from '@/web/types/auth';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuthContext();
+  const { signIn } = useAuth();
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async ( providerId: string) => {
     if (!email.trim()) return;
     setIsLoading(true);
+    setError('');
     try {
-      // TODO: implement actual login logic here
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      await login(email);
+      await signIn(providerId, email);
       navigate('/');
+      setSuccess(true);
     } catch (error) {
       console.error('Login failed:', error);
-      setError('Login failed.');
+      setError('Failed to send magic link. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -32,45 +33,46 @@ const LoginPage = () => {
     <div className="fixed inset-0 flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-[400px] space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
-          <p className="text-muted-foreground">Enter your email to sign in to your account</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="h-12"
-              autoFocus
-              required
-            />
-          </div>
-          
-          <Button 
-            type="submit" 
-            className="w-full h-12"
-            disabled={!email.trim() || isLoading}
-          >
-            {isLoading ? 'Signing in...' : 'Continue'}
-          </Button>
-        </form>
-
-      {error && <div className="error">{error}</div>}
-      <div className="text-center">
-          <p className="text-sm text-muted-foreground">
-            Don't have an account?{' '}
-            <button
-              onClick={() => navigate('/signup')}
-              className="font-medium text-foreground hover:underline"
-            >
-              Sign up
-            </button>
+          <h1 className="text-2xl font-semibold">{success ? 'Check your email' : 'Sign in'}</h1>
+          <p className="text-muted-foreground">
+            {success 
+              ? `We've sent a magic link to ${email}. Click the link to sign in.`
+              : 'Enter your email to sign in to your account'
+            }
           </p>
         </div>
-        
+
+        {!success && Object.values(providerMap).map((provider: Provider) => (
+          <form onSubmit={(e) => {
+              e.preventDefault();
+              handleSubmit(provider.id)
+            }} 
+            className="space-y-4" 
+            key={provider.id}
+          >
+            <div className="space-y-2">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                className="h-12"
+                autoFocus
+                required
+              />
+            </div>
+            
+            <Button 
+              type="submit" 
+              className="w-full h-12"
+              disabled={!email.trim() || isLoading}
+            >
+              {isLoading ? 'Sending magic link...' : 'Continue'}
+            </Button>
+          </form>
+        ))}
+
+      {error && <div className="error">{error}</div>}
       </div>
     </div>
   );
