@@ -13,6 +13,7 @@ if (!process.env.AUTH_RESEND_KEY) throw new Error('AUTH_RESEND_KEY is required')
 export const authConfig = {
   secret: process.env.AUTH_SECRET,
   trustHost: true,
+  useSecureCookies: false, // Allow HTTP cookies for external IP access
   providers: [
     Resend({
       apiKey: process.env.AUTH_RESEND_KEY,
