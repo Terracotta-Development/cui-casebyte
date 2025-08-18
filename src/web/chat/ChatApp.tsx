@@ -11,7 +11,7 @@ import { PreferencesProvider } from './contexts/PreferencesContext';
 import { AuthProvider } from './contexts/AuthContext';
 import './styles/global.css';
 import { useAuth } from '../hooks/useAuth';
-import { ThemeToggler } from './components/ThemeToggler';
+import { Button } from './components/ui/button';
 
 // Unauthenticated component with login button
 function UnauthenticatedScreen() {
@@ -27,7 +27,7 @@ function UnauthenticatedScreen() {
       gap: '1rem',
       padding: '2rem'
     }}>
-      {/* Theme toggler in top-right corner */}
+      {/* Theme toggler in top-right corner, CURRENTLY NOT AUTHENTICATED TO USE */}
       {/* <div style={{ 
         position: 'absolute', 
         top: '2rem', 
@@ -36,22 +36,15 @@ function UnauthenticatedScreen() {
         <ThemeToggler variant="outline" size="sm" />
       </div> */}
       
-      <h1>Welcome to CUI</h1>
+      <h1 className="text-2xl">Welcome to CaseByte</h1>
       <p>Please sign in to continue</p>
-      <button 
-        onClick={() => navigate('/signin')} // or signIn()
-        style={{
-          padding: '0.75rem 1.5rem',
-          fontSize: '1rem',
-          backgroundColor: '#007bff',
-          color: 'white',
-          border: 'none',
-          borderRadius: '0.375rem',
-          cursor: 'pointer'
-        }}
+      <Button 
+        onClick={() => navigate('/signin')} 
+        variant="default"
+        size="lg"
       >
         Sign In with Email
-      </button>
+      </Button>
     </div>
   );
 }
@@ -68,14 +61,6 @@ function LoadingScreen() {
       flexDirection: 'column',
       gap: '1rem'
     }}>
-      {/* Theme toggler in top-right corner
-      <div style={{ 
-        position: 'absolute', 
-        top: '2rem', 
-        right: '2rem' 
-      }}>
-        <ThemeToggler variant="outline" size="sm" />
-      </div> */}
       
       <div>Loading...</div>
       <div style={{ fontSize: '0.875rem', opacity: 0.7 }}>
@@ -86,43 +71,64 @@ function LoadingScreen() {
 }
 
 function ChatApp() {
-  const { session, loading, isAuthenticated } = useAuth();
+  const { loading, isAuthenticated } = useAuth();
 
   // Show loading screen while checking authentication
   if (loading) {
     return <LoadingScreen />;
   }
 
-  // Show login screen if not authenticated
-  if (!isAuthenticated) {
+  const MyRoutes = () => {
     return (
       <Routes>
         <Route path="/signin" element={<LoginPage />} />
         <Route path="/signout" element={<SignOutPage />} />
-        <Route path="/" element={<UnauthenticatedScreen />} />
-        <Route path="/*" element={<UnauthenticatedScreen />} />
+        <Route
+          path="/"
+          element={
+            isAuthenticated ? (
+              <Layout>
+                <Home />
+              </Layout>
+            ) : (
+              <UnauthenticatedScreen />
+            )
+          }
+        />
+        <Route
+          path="/c/:sessionId"
+          element={
+            isAuthenticated ? (
+              <Layout>
+                <ConversationView />
+              </Layout>
+            ) : (
+              <UnauthenticatedScreen />
+            )
+          }
+        />
+        <Route
+          path="*"
+          element={
+            isAuthenticated ? (
+              <Layout>
+                <Home />
+              </Layout>
+            ) : (
+              <UnauthenticatedScreen />
+            )
+          }
+        />
       </Routes>
-    );
-  }
+    )
+  };
 
   return (
     <AuthProvider>
       <PreferencesProvider>
         <StreamStatusProvider>
           <ConversationsProvider>
-            <Routes>
-              <Route path="/signout" element={<SignOutPage />} /> 
-              <Route path="/" element={
-                <Layout>
-                  <Home />
-                </Layout>
-              } />
-              <Route path="/c/:sessionId" element={
-                <Layout>
-                  <ConversationView />
-                </Layout>
-              } />
-            </Routes>
+            <MyRoutes />
           </ConversationsProvider>
         </StreamStatusProvider>
       </PreferencesProvider>

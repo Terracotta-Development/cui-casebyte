@@ -61,19 +61,28 @@ export function useAuth() {
    */
   async function signOut(): Promise<boolean> {
     setLoading(true);
+    const csrfRes = await fetch("/auth/csrf");
+    const { csrfToken } = await csrfRes.json();
     try {
-      const response = await fetch('/auth/signout', {
-        method: 'POST',
+      const response = await fetch("/auth/signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          csrfToken,
+        }),
+        credentials: "include"
       });
-      console.log("SIGN OUT RESPONSE: ",response); // TODO: remove once debugged
       if (!response.ok) {
-        console.error("Error in signing out");
+        console.error("Error in signing out.");
+        setLoading(false);
         return false;
       }
     } catch(error) {
       console.error("Error in signing out:", error);
+      setLoading(false);
       return false;
     } finally {
+      setSession(null);
       setLoading(false);
     }
     return true;
@@ -82,23 +91,42 @@ export function useAuth() {
   /**
    * Sign in user by calling Auth.js signin API directly
    */
-  async function signIn(providerId: string, email: string): Promise<Response> {
+  async function signIn(providerId: string, email: string): Promise<boolean> {
+    setLoading(true);
+    const csrfRes = await fetch("/auth/csrf");
+    const { csrfToken } = await csrfRes.json();
+
     const sanitizedEmail = email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!sanitizedEmail || !emailRegex.test(sanitizedEmail)) {
+      setLoading(false);
+      console.error("Invalid email address.");
+      return false;
+    }
 
     const endpointUrl = '/auth/signin/'+providerId;
 
-    const response = await fetch(endpointUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ 
-        email: sanitizedEmail,
-        redirect: false,
-      }),
-    });
-
-    return response;
+    try {
+      const response = await fetch(endpointUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: sanitizedEmail,
+          csrfToken,
+        }),
+      });
+      if (!response.ok) {
+        console.error("Error signing in.");
+      }
+    } catch(error) {
+      console.error("Error signing in:", error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+    return true;
   }
 
   return {

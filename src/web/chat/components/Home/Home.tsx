@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useConversations } from '../../contexts/ConversationsContext';
 import { api } from '../../services/api';
 import { Composer, ComposerRef } from '@/web/chat/components/Composer';
-import { TaskTabs } from './TaskTabs';
-import { TaskList } from './TaskList';
 
 export function Home() {
   const navigate = useNavigate();

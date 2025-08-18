@@ -11,7 +11,6 @@ const LoginPage = () => {
   const { signIn } = useAuth();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async ( providerId: string) => {
     if (!email.trim()) return;
@@ -19,7 +18,6 @@ const LoginPage = () => {
     setError('');
     try {
       await signIn(providerId, email);
-      navigate('/');
       setSuccess(true);
     } catch (error) {
       console.error('Login failed:', error);

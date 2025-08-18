@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { Button } from '@/web/chat/components/ui/button';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import { providerMap, Provider } from '@/web/types/auth';
 
 const SignOutPage = () => {
-  const { signOut } = useAuth();
+  const { signOut, user, loading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,8 +17,6 @@ const SignOutPage = () => {
       const signedOut: boolean = await signOut();
       if (!signedOut) {
         setError('Sign out failed');
-      } else {
-        navigate('/');
       }
     } catch (err) {
       setError('Sign out failed');
@@ -36,22 +32,42 @@ const SignOutPage = () => {
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-semibold">Sign Out</h1>
         </div>
-        {Object.values(providerMap).map((provider: Provider) => (
-        <form onSubmit={handleSubmit} className="space-y-4" key={provider.id}>
-          <div className="space-y-2 text-center italic">
-            Are you sure you want to sign out from CaseByte?
+        {loading ? (
+          <div className="fixed inset-0 flex items-center justify-center bg-background p-6">
+            <div className="text-center text-lg">Loading...</div>
           </div>
-          
-          <Button 
-            type="submit" 
-            className="w-full h-12"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Signing out...' : 'Sign Out'}
-          </Button>
-        </form>
-        ))}
-        {error && <div className="error">{error}</div>}
+        ) : (user ? (
+          <>
+            {Object.values(providerMap).map((provider: Provider) => (
+              <form onSubmit={handleSubmit} className="space-y-4" key={provider.id}>
+                <div className="space-y-2 text-center italic">
+                  Are you sure you want to sign out from CaseByte?
+                </div>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full h-12"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Signing out...' : 'Sign Out'}
+                </Button>
+              </form>
+            ))}
+            {error && <div className="error">{error}</div>}
+          </>
+        ) : (
+          <div className="space-y-4 text-center">
+            <div className="text-lg font-medium">You have successfully signed out.</div>
+            <Button
+              variant="default"
+              size="lg"
+              onClick={() => window.location.href = "/"}
+            >
+              Go to Home
+            </Button>
+          </div>
+        )
+      )}
       </div>
     </div>
   );

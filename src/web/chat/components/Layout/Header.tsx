@@ -7,23 +7,15 @@ import { useAuth } from '../../../hooks/useAuth';
 import { ThemeToggler } from '@/web/chat/components/ThemeToggler';
 
 const Header = () => {
-  const { user, signOut, signIn } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
 	const handleLogin = () => {
 		navigate('/signin');
   };
 
-  const handleSignup = () => {
-		navigate('/signin');
-  };
-
   const handleLogout = async () => {
-		try {
-			signOut();
-		} catch (error) {
-			console.error('Logout failed:', error);
-		}
+		navigate('/signout');
   };
 
   return (
@@ -44,16 +36,7 @@ const Header = () => {
 									aria-label="Log In"
 									onClick={handleLogin}
 								>
-									Log In
-								</Button>
-								<Button
-									variant="outline"
-									size="sm"
-									className="p-2 rounded-2xl hover:bg-muted/50"
-									aria-label="Sign Up"
-									onClick={handleSignup}
-								>
-									Sign up for free
+									Sign In
 								</Button>
 							</Tooltip>
 						</TooltipProvider>         
