@@ -547,7 +547,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
     switch (mode) {
       case 'default': return 'Ask';
       case 'acceptEdits': return 'Auto';
-      case 'bypassPermissions': return 'Yolo';
+      case 'bypassPermissions': return 'Ask';
       case 'plan': return 'Plan';
       default: return 'Ask';
     }
@@ -557,7 +557,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
     switch (mode) {
       case 'default': return 'Ask - Ask for permissions as needed';
       case 'acceptEdits': return 'Auto - Allow Claude to make changes directly';
-      case 'bypassPermissions': return 'Yolo - Skip all permission prompts';
+      case 'bypassPermissions': return 'Ask';
       case 'plan': return 'Plan - Create a plan without executing';
       default: return 'Ask - Ask for permissions as needed';
     }
