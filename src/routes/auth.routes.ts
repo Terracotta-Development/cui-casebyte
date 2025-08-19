@@ -1,6 +1,5 @@
 import { expressAuth } from '@/auth.js'
 import express from 'express'
-
 export function createAuthRoutes() {
     const router = express.Router()
     

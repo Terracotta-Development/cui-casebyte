@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useConversations } from '../../contexts/ConversationsContext';
 import { api } from '../../services/api';
 import { Composer, ComposerRef } from '@/web/chat/components/Composer';
-import { TaskTabs } from './TaskTabs';
-import { TaskList } from './TaskList';
 
 export function Home() {
   const navigate = useNavigate();
@@ -137,7 +135,7 @@ export function Home() {
                     </svg>
                   </div>
                 </div>
-                <h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte Law Research Assistant</h1>
+                <a href="/"><h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte</h1></a>
               </div>
               
               <div className="w-full">

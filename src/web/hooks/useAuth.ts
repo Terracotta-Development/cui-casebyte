@@ -34,20 +34,6 @@ export async function getSession(): Promise<AuthSession | null> {
 }
 
 /**
- * Sign out user by redirecting to Auth.js signout
- */
-export function signOut(): void {
-  window.location.href = '/auth/signout';
-}
-
-/**
- * Sign in user by redirecting to Auth.js signin
- */
-export function signIn(): void {
-  window.location.href = '/auth/signin';
-}
-
-/**
  * Hook for handling Auth.js session management
  */
 export function useAuth() {
@@ -69,6 +55,79 @@ export function useAuth() {
 
     checkSession();
   }, []);
+
+  /**
+   * Sign out user by calling Auth.js signout API directly
+   */
+  async function signOut(): Promise<boolean> {
+    setLoading(true);
+    const csrfRes = await fetch("/auth/csrf");
+    const { csrfToken } = await csrfRes.json();
+    try {
+      const response = await fetch("/auth/signout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          csrfToken,
+        }),
+        credentials: "include"
+      });
+      if (!response.ok) {
+        console.error("Error in signing out.");
+        setLoading(false);
+        return false;
+      }
+    } catch(error) {
+      console.error("Error in signing out:", error);
+      setLoading(false);
+      return false;
+    } finally {
+      setSession(null);
+      setLoading(false);
+    }
+    return true;
+  }
+
+  /**
+   * Sign in user by calling Auth.js signin API directly
+   */
+  async function signIn(providerId: string, email: string): Promise<boolean> {
+    setLoading(true);
+    const csrfRes = await fetch("/auth/csrf");
+    const { csrfToken } = await csrfRes.json();
+
+    const sanitizedEmail = email.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!sanitizedEmail || !emailRegex.test(sanitizedEmail)) {
+      setLoading(false);
+      console.error("Invalid email address.");
+      return false;
+    }
+
+    const endpointUrl = '/auth/signin/'+providerId;
+
+    try {
+      const response = await fetch(endpointUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: sanitizedEmail,
+          csrfToken,
+        }),
+      });
+      if (!response.ok) {
+        console.error("Error signing in.");
+      }
+    } catch(error) {
+      console.error("Error signing in:", error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+    return true;
+  }
 
   return {
     session,

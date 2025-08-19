@@ -6,6 +6,9 @@ import * as path from 'path'
 
 export default defineConfig({
   root: 'src/web',
+  define: {
+    'process.env.NODE_ENV': JSON.stringify('development'), // or 'production'
+  },
   plugins: [
     react(),
     tailwindcss(),
