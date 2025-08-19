@@ -137,7 +137,8 @@ export function Home() {
                 </div>
                 <h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte</h1>
               </div>
-              
+              <p className="mb-4 text-lg italic text-muted-foreground">What would you like to research?</p>
+
               <div className="w-full">
                 <Composer 
                   ref={composerRef}
