@@ -63,10 +63,9 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
             {case_result.highlights.length > 0 && (
               <div className="mt-2 text-xs">
                 <div className="text-muted-foreground mb-1">Highlights:</div>
-                {case_result.highlights.map((highlight, idx) => (
-                  <div key={idx} className="bg-yellow-100 dark:bg-yellow-900/30 p-1 rounded text-foreground" 
-                       dangerouslySetInnerHTML={{ __html: highlight }} />
-                ))}
+                  {case_result.highlights.map((highlight, idx) => (
+                    <HighlightHtml key={idx} html={highlight} />
+                  ))}
               </div>
             )}
           </div>
@@ -109,10 +108,9 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
             {ordinance.highlights.length > 0 && (
               <div className="mt-2 text-xs">
                 <div className="text-muted-foreground mb-1">Highlights:</div>
-                {ordinance.highlights.map((highlight, idx) => (
-                  <div key={idx} className="bg-yellow-100 dark:bg-yellow-900/30 p-1 rounded text-foreground" 
-                       dangerouslySetInnerHTML={{ __html: highlight }} />
-                ))}
+                  {ordinance.highlights.map((highlight, idx) => (
+                    <HighlightHtml key={idx} html={highlight} />
+                  ))}
               </div>
             )}
           </div>
@@ -166,10 +164,9 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
             {pd.highlights.length > 0 && (
               <div className="mt-2 text-xs">
                 <div className="text-muted-foreground mb-1">Highlights:</div>
-                {pd.highlights.map((highlight, idx) => (
-                  <div key={idx} className="bg-yellow-100 dark:bg-yellow-900/30 p-1 rounded text-foreground" 
-                       dangerouslySetInnerHTML={{ __html: highlight }} />
-                ))}
+                  {pd.highlights.map((highlight, idx) => (
+                    <HighlightHtml key={idx} html={highlight} />
+                  ))}
               </div>
             )}
           </div>
@@ -365,6 +362,23 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
         );
     }
   };
+
+  // Helper to highlight only <em> elements in HTML
+  function HighlightHtml({ html }: { html: string }) {
+    // Parse the HTML string
+    const parser = typeof window !== 'undefined' ? window.document : null;
+    if (!parser) {
+      // SSR fallback: just render as is
+      return <span dangerouslySetInnerHTML={{ __html: html }} />;
+    }
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    // Find all <em> elements and wrap them with highlight classes
+    temp.querySelectorAll('em').forEach((el) => {
+      el.classList.add('bg-yellow-100', 'dark:bg-yellow-900/30', 'p-1', 'rounded', 'text-foreground');
+    });
+    return <span dangerouslySetInnerHTML={{ __html: temp.innerHTML }} />;
+  }
 
   return (
     <div className="flex flex-col gap-1 -mt-0.5">
