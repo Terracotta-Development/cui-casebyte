@@ -137,7 +137,7 @@ export function Home() {
                 </div>
                 <h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte</h1>
               </div>
-              <p className="mb-4 text-lg italic text-muted-foreground">What would you like to research?</p>
+              <p className="text-base mb-4 italic text-muted-foreground">What would you like to research?</p>
 
               <div className="w-full">
                 <Composer 
@@ -176,8 +176,10 @@ export function Home() {
                     return response.commands;
                   }}
                 />
-              </div>
+                {/* Press Ctrl+Enter or Cmd+Enter to submit */}
+                <p className="mt-1 pr-1 text-xs text-muted-foreground italic text-right">Press Ctrl+Enter or Cmd+Enter to submit</p>
 
+              </div>
               {/* <TaskTabs 
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
