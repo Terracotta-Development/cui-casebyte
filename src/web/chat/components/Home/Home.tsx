@@ -135,7 +135,7 @@ export function Home() {
                     </svg>
                   </div>
                 </div>
-                <a href="/"><h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte</h1></a>
+                <h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte</h1>
               </div>
               
               <div className="w-full">
