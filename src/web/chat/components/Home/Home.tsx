@@ -121,7 +121,7 @@ export function Home() {
         <div className="flex flex-col h-full w-full">
           <div className="z-0 mx-auto flex flex-col w-full max-w-3xl h-full">
             <div className="sticky top-0 z-50 flex flex-col items-center bg-background">
-              <div className="flex items-center gap-3 mb-4 pt-4">
+              <div className="flex items-center gap-3 mb-4 pt-4 mt-16">
                 <div className="flex items-center">
                   <div className="w-[27px] h-[27px] flex items-center justify-center">
                     <svg width="24" height="24" viewBox="4.5 5.2 11.7 13.3" fill="currentColor">
@@ -135,9 +135,10 @@ export function Home() {
                     </svg>
                   </div>
                 </div>
-                <a href="/"><h1 className="text-2xl font-semibold font-sans text-foreground">Casebyte</h1></a>
+                <h1 className="text-2xl font-semibold font-sans text-foreground">What would you like to research?</h1>
               </div>
-              
+              {/* <p className="text-base mb-4 italic text-muted-foreground">What would you like to research?</p> */}
+
               <div className="w-full">
                 <Composer 
                   ref={composerRef}
@@ -175,8 +176,10 @@ export function Home() {
                     return response.commands;
                   }}
                 />
-              </div>
+                {/* Press Ctrl+Enter or Cmd+Enter to submit */}
+                <p className="mx-6 mt-1 pr-1 text-xs text-muted-foreground italic text-right">Press Ctrl+Enter or Cmd+Enter to submit</p>
 
+              </div>
               {/* <TaskTabs 
                 activeTab={activeTab}
                 onTabChange={setActiveTab}

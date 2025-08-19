@@ -21,11 +21,11 @@ const Header = () => {
   return (
 		<header className="sticky top-0 z-20 flex items-center justify-between p-3 h-[60px] bg-background font-semibold">
 			<div className="flex items-center gap-3">
-				<h1 className="text-lg font-semibold">CaseByte</h1>
-				<ThemeToggler variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" />
+				<a href="/"><h1 className="text-lg font-semibold">Casebyte</h1></a>
 			</div>
 			<div className="relative flex items-center justify-between w-full px-1 py-3">
 				<nav className="flex items-center gap-2 ml-auto">
+					<ThemeToggler variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" />
 					{!user ? (
 						<TooltipProvider>
 							<Tooltip>

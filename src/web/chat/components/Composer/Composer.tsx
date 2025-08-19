@@ -845,7 +845,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
   return (
     <form 
       ref={composerRef}
-      className="w-full relative" 
+      className="mx-6 relative" 
       onSubmit={(e) => {
         e.preventDefault();
         handleSubmit(selectedPermissionMode);

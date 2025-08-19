@@ -8,9 +8,10 @@ import { providerMap, Provider } from '@/web/types/auth';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, session, loading } = useAuth();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async ( providerId: string) => {
     if (!email.trim()) return;
@@ -27,6 +28,30 @@ const LoginPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold">Loading...</h1>
+      </div>
+    );
+  }
+
+  if (session) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold">You are already signed in</h1>
+        <Button 
+          size="lg"
+          variant="default"
+          onClick={() => navigate('/')}
+          className="mt-4"
+        >
+          Go to Home
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-[400px] space-y-6">
@@ -34,7 +59,7 @@ const LoginPage = () => {
           <h1 className="text-2xl font-semibold">{success ? 'Check your email' : 'Sign in'}</h1>
           <p className="text-muted-foreground">
             {success 
-              ? `We've sent a magic link to ${email}. Click the link to sign in.`
+              ? `We've sent a login link to ${email}`
               : 'Enter your email to sign in to your account'
             }
           </p>

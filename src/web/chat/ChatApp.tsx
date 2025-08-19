@@ -36,7 +36,7 @@ function UnauthenticatedScreen() {
         <ThemeToggler variant="outline" size="sm" />
       </div> */}
       
-      <h1 className="text-2xl">Welcome to CaseByte</h1>
+      <h1 className="text-2xl">Welcome to Casebyte</h1>
       <p>Please sign in to continue</p>
       <Button 
         onClick={() => navigate('/signin')} 
