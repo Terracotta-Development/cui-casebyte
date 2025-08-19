@@ -8,9 +8,10 @@ import { providerMap, Provider } from '@/web/types/auth';
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, session, loading } = useAuth();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async ( providerId: string) => {
     if (!email.trim()) return;
@@ -26,6 +27,30 @@ const LoginPage = () => {
       setIsLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold">Loading...</h1>
+      </div>
+    );
+  }
+
+  if (session) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold">You are already signed in</h1>
+        <Button 
+          size="lg"
+          variant="default"
+          onClick={() => navigate('/')}
+          className="mt-4"
+        >
+          Go to Home
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-background p-6">
