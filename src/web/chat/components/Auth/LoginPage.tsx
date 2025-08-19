@@ -59,7 +59,7 @@ const LoginPage = () => {
           <h1 className="text-2xl font-semibold">{success ? 'Check your email' : 'Sign in'}</h1>
           <p className="text-muted-foreground">
             {success 
-              ? `We've sent a magic link to ${email}. Click the link to sign in.`
+              ? `We've sent a login link to ${email}`
               : 'Enter your email to sign in to your account'
             }
           </p>
