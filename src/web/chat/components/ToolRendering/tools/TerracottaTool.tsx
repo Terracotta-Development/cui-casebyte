@@ -363,20 +363,17 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
     }
   };
 
-  // Helper to highlight only <em> elements in HTML
   function HighlightHtml({ html }: { html: string }) {
-    // Parse the HTML string
     const parser = typeof window !== 'undefined' ? window.document : null;
     if (!parser) {
-      // SSR fallback: just render as is
       return <span dangerouslySetInnerHTML={{ __html: html }} />;
     }
     const temp = document.createElement('div');
     temp.innerHTML = html;
-    // Find all <em> elements and wrap them with highlight classes
-    temp.querySelectorAll('em').forEach((el) => {
-      el.classList.add('bg-yellow-100', 'dark:bg-yellow-900/30', 'p-1', 'rounded', 'text-foreground');
-    });
+      temp.querySelectorAll('em').forEach((el) => {
+        el.classList.add('bg-yellow-100', 'dark:bg-yellow-900/30', 'rounded-sm', 'text-foreground');
+        el.classList.remove('p-1', 'rounded'); // Remove extra padding and large radius
+      });
     return <span dangerouslySetInnerHTML={{ __html: temp.innerHTML }} />;
   }
 
