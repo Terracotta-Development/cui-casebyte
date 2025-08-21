@@ -121,8 +121,7 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
       case 'mcp__terracotta-law__search_ordinances':
         return (
           <>
-            <span className="font-semibold">Searching through ordinances/regulations...</span>
-            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+            <span className="font-semibold">Searching through ordinances/regulations from HKLII...</span>
           </>
         );
 
@@ -130,7 +129,6 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
         return (
           <>
             <span className="font-semibold">Searching through case law...</span>
-            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
           </>
         );
 
@@ -138,7 +136,6 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
         return (
           <>
             <span className="font-semibold">Searching through practice directions...</span>
-            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
           </>
         );
 
@@ -146,15 +143,13 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
         return (
           <>
             <span className="font-semibold">Retrieving the full ordinance/regulation...</span>
-            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
           </>
         );
 
       case 'mcp__terracotta-law__get_case_judgement':
         return (
           <>
-            <span className="font-semibold">Retrieving case judgement...</span>
-            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
+            <span className="font-semibold">Retrieving case judgement from HKLII...</span>
           </>
         );
 
@@ -162,7 +157,6 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
         return (
           <>
             <span className="font-semibold">Retrieving practice directions...</span>
-            {/* <span className="font-normal">({formatToolInput(toolInput)})</span> */}
           </>
         );
       
