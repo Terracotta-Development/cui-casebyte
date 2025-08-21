@@ -12,6 +12,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import './styles/global.css';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from './components/ui/button';
+import LandingPage from '@/web/landing/LandingPage';
 
 // Unauthenticated component with login button
 function UnauthenticatedScreen() {
@@ -128,7 +129,8 @@ function ChatApp() {
       <PreferencesProvider>
         <StreamStatusProvider>
           <ConversationsProvider>
-            <MyRoutes />
+            {/* <MyRoutes /> */}
+            < LandingPage />
           </ConversationsProvider>
         </StreamStatusProvider>
       </PreferencesProvider>
