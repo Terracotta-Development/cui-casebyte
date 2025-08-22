@@ -97,7 +97,7 @@ const LandingPage = () => {
                   fontWeight: '300',
                   margin: 0
                 }}>
-                  The first AI research assistant trained specifically on the Hong Kong judiciary. 
+                  An AI research assistant trained specifically on the Hong Kong judiciary. 
                   Pinpoint relevant precedents, optimize your arguments, and never miss a deadline.
                 </p>
               </div>
@@ -130,7 +130,7 @@ const LandingPage = () => {
                 }}>
                   Get Started
                 </button>
-                <button style={{
+                {/* <button style={{
                   backgroundColor: 'var(--background)',
                   color: 'var(--muted-foreground)',
                   fontWeight: '600',
@@ -151,7 +151,7 @@ const LandingPage = () => {
                   e.target.style.backgroundColor = 'var(--background)';
                 }}>
                   How lawyers use our tool
-                </button>
+                </button> */}
               </div>
             </div>
             <div className="lg:w-1/2">
@@ -244,7 +244,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* How It Solves Your Problems Section */}
       <section style={{
         padding: '6rem 0',
         backgroundColor: 'var(--muted)'
@@ -261,7 +260,7 @@ const LandingPage = () => {
               marginBottom: '1.5rem',
               margin: '0 0 1.5rem 0'
             }}>
-              Stop Searching. Start Winning.
+              Less Searching. Faster Progress.
             </h2>
             <div style={{
               width: '96px',
@@ -273,7 +272,6 @@ const LandingPage = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Card 1 */}
             <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
               <div className="space-y-6">
                 <h3 className="font-bold text-gray-900 text-xl mb-6 group-hover:text-blue-700 transition-colors">
@@ -281,7 +279,7 @@ const LandingPage = () => {
                 </h3>
                 <div className="bg-blue-50 p-5 rounded-xl border border-blue-100">
                   <p className="text-sm text-gray-700 italic font-medium">
-                    "we are a law firm representing the Defendant in a monetary claim..."
+                    "We are a law firm representing the Defendant in a monetary claim..."
                   </p>
                 </div>
                 <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
@@ -298,7 +296,6 @@ const LandingPage = () => {
               </div>
             </div>
 
-            {/* Card 2 */}
             <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200 hover:-translate-y-2">
               <div className="space-y-6">
                 <h3 className="font-bold text-gray-900 text-xl mb-6 group-hover:text-blue-700 transition-colors">
@@ -323,7 +320,6 @@ const LandingPage = () => {
               </div>
             </div>
 
-            {/* Card 3 */}
             <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-200 hover:-translate-y-2 md:col-span-2 lg:col-span-1">
               <div className="space-y-6">
                 <h3 className="font-bold text-gray-900 text-xl mb-6 group-hover:text-blue-700 transition-colors">
@@ -417,7 +413,7 @@ const LandingPage = () => {
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Simple, Transparent Pricing
             </h2>
-            <p className="text-xl md:text-2xl text-gray-600 font-light">Start with a 7-day free trial. No credit card required.</p>
+            <p className="text-xl md:text-2xl text-gray-600 font-light">Start with a 7-day free trial.</p>
             <div className="w-28 h-1 bg-blue-600 mx-auto mt-6 rounded-full"></div>
           </div>
 
@@ -538,7 +534,7 @@ const LandingPage = () => {
             fontWeight: '300',
             opacity: '0.9'
           }}>
-            Join hundreds of Hong Kong legal professionals who are already using our AI assistant to enhance their practice.
+            Use our AI assistant to enhance your practice.
           </p>
           <button style={{
             backgroundColor: 'var(--background)',
@@ -568,7 +564,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer style={{
         backgroundColor: 'var(--accent)',
         color: 'var(--accent-foreground)',
