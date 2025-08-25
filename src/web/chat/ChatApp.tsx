@@ -87,6 +87,12 @@ function ChatApp() {
         <Route
           path="/"
           element={
+            <LandingPage />
+          }
+        />
+        <Route
+          path="/home"
+          element={
             isAuthenticated ? (
               <Layout>
                 <Home />
@@ -129,8 +135,7 @@ function ChatApp() {
       <PreferencesProvider>
         <StreamStatusProvider>
           <ConversationsProvider>
-            {/* <MyRoutes /> */}
-            < LandingPage />
+            <MyRoutes />
           </ConversationsProvider>
         </StreamStatusProvider>
       </PreferencesProvider>

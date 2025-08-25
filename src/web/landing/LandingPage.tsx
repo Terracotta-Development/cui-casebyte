@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../chat/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { Composer } from '../chat/components/Composer/Composer';
+import { TerracottaTool } from '../chat/components/ToolRendering/tools/TerracottaTool';
+import { X } from 'lucide-react';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
+
+  const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean, onClose: () => void, title: string, children: React.ReactNode }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-[var(--background)] rounded-[var(--radius-lg)] max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-[var(--border)]">
+          <div className="flex items-center justify-between p-6 border-b border-[var(--border)]">
+            <h2 className="text-xl font-bold text-[var(--foreground)] m-0">{title}</h2>
+            <button
+              onClick={onClose}
+              className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] p-1 rounded-md hover:bg-[var(--muted)] transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+          <div className="p-6">
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Header */}
@@ -39,33 +69,91 @@ const LandingPage = () => {
                   Pinpoint relevant precedents, optimize your arguments, and never miss a deadline.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex justify-center">
                 <Button 
                   onClick={() => navigate('/signin')}
-                  className="bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold py-4 px-10 rounded-[var(--radius-lg)] border-none shadow-[var(--shadow-md)] hover:opacity-90 hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition-all duration-300 transform"
+                  size="lg"
+                  className="bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-lg py-6 px-16 rounded-[var(--radius-lg)] border-none shadow-[var(--shadow-lg)] hover:opacity-90 hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition-all duration-300 transform"
                 >
                   Get Started
                 </Button>
               </div>
             </div>
-            <div className="lg:w-1/2" id="searchBox">
-              <div className="bg-[var(--card)] rounded-[var(--radius-lg)] shadow-[var(--shadow-lg)] p-8 border border-[var(--border)]">
-                <div className="bg-[var(--muted)] rounded-[var(--radius)] p-6 mb-6 border border-[var(--border)]">
-                  <div className="flex gap-3 mb-4">
-                    <div className="w-3.5 h-3.5 rounded-full bg-red-400 shadow-[var(--shadow-sm)]"></div>
-                    <div className="w-3.5 h-3.5 rounded-full bg-yellow-400 shadow-[var(--shadow-sm)]"></div>
-                    <div className="w-3.5 h-3.5 rounded-full bg-green-400 shadow-[var(--shadow-sm)]"></div>
+            <div className="lg:w-1/2" id="liveDemo">
+              <div className="bg-[var(--card)] rounded-[var(--radius-lg)] shadow-[var(--shadow-lg)] p-6 border border-[var(--border)] space-y-4">
+                {/* Mock Conversation View */}
+                <div className="space-y-4">
+                  {/* User Message */}
+                  <div className="flex justify-end">
+                    <div className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-lg max-w-xs">
+                      <p className="text-sm m-0">Find 2 cases on duty to avoid conflicts of interest, and summarize case facts</p>
+                    </div>
                   </div>
-                  <div className="bg-[var(--background)] p-5 rounded-[var(--radius)] shadow-[var(--shadow-sm)] border border-[var(--border)]">
-                    <p className="text-[var(--muted-foreground)] font-medium m-0">Search: "monetary claim dispute quantum calculation methods"</p>
+
+                  {/* AI Response */}
+                  <div className="flex justify-start">
+                    <div className="bg-[var(--muted)] px-4 py-2 rounded-lg max-w-md">
+                      <p className="text-sm text-[var(--foreground)] mb-2 m-0">I'll search for Hong Kong cases related to duty to avoid conflicts of interest from the past 5 years and summarize the case facts for you.</p>
+                      
+                      {/* TerracottaTool Component */}
+                      <div className="mt-3">
+                        <TerracottaTool
+                          toolName="mcp__terracotta-law__search_case_law"
+                          input={{
+                            query: '"duty to avoid conflicts of interest" OR "conflict of interest" OR "fiduciary duty" OR "breach of fiduciary duty"',
+                            size: 2,
+                            sort_by_date: "newest",
+                          }}
+                          result={JSON.stringify({
+                            query: '"duty to avoid conflicts of interest" OR "conflict of interest" OR "fiduciary duty" OR "breach of fiduciary duty"',
+                            result_count: 3,
+                            results: [
+                              {
+                                id: "hkcfi_2024_3729",
+                                case_name: "CHIEF FINE INVESTMENTS LTD (IN LIQUIDATION) AND ANOTHER V. KINGSTON CAPITAL INVESTMENT LTD AND OTHERS",
+                                neutral_citation: "[2024] HKCFI 3729",
+                                court: "HKCFI",
+                                date: "2024-12-30",
+                                case_url: "https://hklii.hk/en/cases/hkcfi/2024/3729",
+                                highlights: [
+                                  "Although in Polyline, the Court of Appeal’s decision was also affected by the fact that the contract in question was entered into by a director in <em>breach of fiduciary duty</em> and the other party was a company controlled by that very director, I do not read the Court of Appeal’s decision to mean that without such rogue director, a strike out application would succeed simply due to the existence of a strong estoppel defence. 34. As such, I do not agree that in pleading a case which seemingly might be defeated by a contractual estoppel defence would amount to an abuse of process. Henderson Abuse - Contradictory Evidence 35."
+                                ]
+                              },
+                              {
+                                id: "hkcfi_2024_3659",
+                                case_name: "WONG KA WAI V. WONG KA YIN RITA (ONE OF THE EXECUTORS OF THE ESTATE OF WONG LUK KAN, DECEASED) AND ANOTHER",
+                                neutral_citation: "[2024] HKCFI 3659",
+                                court: "HKCFI",
+                                date: "2024-12-03",
+                                case_url: "https://hklii.hk/en/cases/hkcfi/2024/3659",
+                                highlights: [
+                                  "(1) Alleged breach of duty and <em>conflict of interest</em> 6. The plaintiff relies on four grounds to support her application. The first ground is that the defendants have allegedly breached their duties as executors by not collecting the debts owed by them to the estate and thereby acting in a <em>conflict of interest</em>. The plaintiff alleges that the 1st defendant owes to the estate C$130,000, being the partial proceeds of sale of a house in Markham, Ontario, Canada (“the Canadian Property”), and the 2nd defendant owes C$228,000 to the estate, also being part of the sale proceeds of the same property. The plaintiff alleges that the 2nd defendant further owes to the estate a sum of C$25,000. 7.Accordingly, given that there is a dispute between the parties on whether the defendants are indebted to the estate, I do not believe that the plaintiff can show that the 1st and the 2nd defendants are in breach of their duties by not collecting the debts owed by them to the estate or are acting in a <em>conflict of interest</em>. The plaintiff therefore fails on this ground. (2) Alleged failure to render full and proper accounts of the estate 12. The plaintiff’s second ground of removal is that the defendants have failed to render a full and proper account of the estate to her. 13. I note that there was extensive correspondence in 2020 between the plaintiff’s former solicitors and the defendants’ former solicitors in relation to the estate accounts prepared by the defendants."
+                                ]
+                              }
+                            ]
+                          })}
+                        />
+                      </div>
+                      
+                      <p className="text-sm text-[var(--foreground)] mt-3 m-0">
+                        I found 2 relevant Hong Kong cases dealing with duty to avoid conflict of interests. These cases...
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div className="bg-[var(--secondary)] rounded-[var(--radius)] p-6 border border-[var(--border)]">
-                  <h3 className="font-bold text-[var(--foreground)] mb-3 text-lg m-0">[Case Name 2018] HKCFI 567</h3>
-                  <p className="text-[var(--secondary-foreground)] text-sm mb-3 font-medium m-0">Relevant paragraphs: 42-48, 56-61</p>
-                  <p className="text-[var(--muted-foreground)] leading-relaxed m-0">
-                    The court established that quantum calculations must consider contemporary market factors...
-                  </p>
+
+                {/* Live Composer */}
+                <div className="pt-2 border-t border-[var(--border)]">
+                  <Composer
+                    placeholder="Ask about Hong Kong case law, ordinances, or practice directions..."
+                    onSubmit={() => {}} // No-op for demo
+                    disabled={true}
+                    showDirectorySelector={false}
+                    showModelSelector={false}
+                    enableFileAutocomplete={false}
+                    showPermissionUI={false}
+                    showStopButton={false}
+                  />
                 </div>
               </div>
             </div>
@@ -95,7 +183,7 @@ const LandingPage = () => {
                 </div>
                 <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
                   <p className="text-sm text-gray-700 font-medium">
-                    The AI returns: Relevant HCR O.18 r.13, Practice Direction 5.4, and summaries of 3 key cases...
+                    Casebyte returns: Relevant HCR O.18 r.13, Practice Direction 5.4, and summaries of 3 key cases...
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -114,12 +202,12 @@ const LandingPage = () => {
                 </h3>
                 <div className="bg-blue-50 p-5 rounded-xl border border-blue-100">
                   <p className="text-sm text-gray-700 italic font-medium">
-                    "summarize the key legal principles in [Case Name]"
+                    "Summarize the key legal principles in [Case Name]"
                   </p>
                 </div>
                 <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
                   <p className="text-sm text-gray-700 font-medium">
-                    The AI returns: Concise summary of 5 key legal principles with relevant paragraph citations...
+                    Casebyte returns: Concise summary of 5 key legal principles with relevant paragraph citations...
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -138,12 +226,12 @@ const LandingPage = () => {
                 </h3>
                 <div className="bg-blue-50 p-5 rounded-xl border border-blue-100">
                   <p className="text-sm text-gray-700 italic font-medium">
-                    "help me optimize this affidavit in a professional legal writing style"
+                    "Help me optimize this affidavit in a professional legal writing style"
                   </p>
                 </div>
                 <div className="bg-gray-50 p-5 rounded-xl border border-gray-200">
                   <p className="text-sm text-gray-700 font-medium">
-                    The AI returns: Revised document with improved structure, terminology, and persuasive language...
+                    Casebyte returns: Revised text with improved structure, terminology, and persuasive language...
                   </p>
                 </div>
                 <div className="flex items-start gap-3">
@@ -244,22 +332,6 @@ const LandingPage = () => {
                   </div>
                   <span className="text-gray-700 font-medium">100 queries / month</span>
                 </li>
-                <li className="flex items-center">
-                  <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">Basic document optimization</span>
-                </li>
-                <li className="flex items-center">
-                  <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                  </div>
-                  <span className="text-gray-700 font-medium">Email support</span>
-                </li>
               </ul>
               <button className="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
                 Start Free Trial
@@ -285,30 +357,6 @@ const LandingPage = () => {
                       </svg>
                     </div>
                     <span className="text-gray-700 font-medium">500 queries / month</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-gray-700 font-medium">Advanced document optimization</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-gray-700 font-medium">Priority support</span>
-                  </li>
-                  <li className="flex items-center">
-                    <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                    </div>
-                    <span className="text-gray-700 font-medium">Multi-user access</span>
                   </li>
                 </ul>
                 <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
@@ -339,18 +387,27 @@ const LandingPage = () => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
             <div>
-              <p className="text-sm font-medium opacity-80 m-0">© 2023 Casebyte. All rights reserved.</p>
+              <p className="text-sm font-medium opacity-80 m-0">© 2025 Terracotta. All rights reserved.</p>
             </div>
             <div className="flex gap-8">
-              <a href="#" className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150">
+              <button 
+                onClick={() => setShowPrivacyModal(true)}
+                className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150 border-none bg-transparent cursor-pointer"
+              >
                 Privacy Policy
-              </a>
-              <a href="#" className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150">
+              </button>
+              <button 
+                onClick={() => setShowTermsModal(true)}
+                className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150 border-none bg-transparent cursor-pointer"
+              >
                 Terms of Service
-              </a>
-              <a href="#" className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150">
+              </button>
+              <button 
+                onClick={() => setShowContactModal(true)}
+                className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150 border-none bg-transparent cursor-pointer"
+              >
                 Contact Info
-              </a>
+              </button>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-white/10 text-center">
@@ -358,6 +415,90 @@ const LandingPage = () => {
           </div>
         </div>
       </footer>
+
+      {/* Privacy Policy Modal */}
+      <Modal isOpen={showPrivacyModal} onClose={() => setShowPrivacyModal(false)} title="Privacy Policy">
+        <div className="space-y-4 text-[var(--foreground)] text-sm">
+          <p><strong>Last updated:</strong> January 2025</p>
+          
+          <section>
+            <h3 className="font-semibold text-base mb-2">Information We Collect</h3>
+            <p>We collect information you provide directly to us, such as when you create an account, use our services, or contact us for support.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-2">How We Use Your Information</h3>
+            <p>We use the information we collect to provide, maintain, and improve our legal research services, process transactions, and communicate with you.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-2">Information Sharing</h3>
+            <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-2">Data Security</h3>
+            <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+          </section>
+        </div>
+      </Modal>
+
+      {/* Terms of Service Modal */}
+      <Modal isOpen={showTermsModal} onClose={() => setShowTermsModal(false)} title="Terms of Service">
+        <div className="space-y-4 text-[var(--foreground)] text-sm">
+          <p><strong>Last updated:</strong> January 2025</p>
+          
+          <section>
+            <h3 className="font-semibold text-base mb-2">Acceptance of Terms</h3>
+            <p>By accessing and using Casebyte, you accept and agree to be bound by the terms and provision of this agreement.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-2">Use License</h3>
+            <p>Permission is granted to temporarily use Casebyte for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-2">Service Availability</h3>
+            <p>We strive to provide continuous service but cannot guarantee uninterrupted access. We reserve the right to modify, suspend, or discontinue the service at any time.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-2">Professional Use</h3>
+            <p>Casebyte is designed to assist legal professionals with research. The information provided should not be considered as legal advice and should be verified independently.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-2">Limitation of Liability</h3>
+            <p>In no event shall Terracotta or its suppliers be liable for any damages arising out of the use or inability to use Casebyte.</p>
+          </section>
+        </div>
+      </Modal>
+
+      {/* Contact Info Modal */}
+      <Modal isOpen={showContactModal} onClose={() => setShowContactModal(false)} title="Contact Information">
+        <div className="space-y-6 text-[var(--foreground)]">
+          <section>
+            <h3 className="font-semibold text-base mb-3">Get in Touch</h3>
+            <p className="mb-4">We'd love to hear from you. Contact us for support, questions, or feedback about Casebyte.</p>
+          </section>
+
+          <section>
+            <h3 className="font-semibold text-base mb-3">Email</h3>
+            <p>
+              <a 
+                href="mailto:support@casebyte.ai" 
+                className="text-[var(--primary)] hover:underline text-lg font-medium"
+              >
+                support@casebyte.ai
+              </a>
+            </p>
+            <p className="text-[var(--muted-foreground)] text-sm mt-1">
+              We typically respond within 48 hours during business days.
+            </p>
+          </section>
+        </div>
+      </Modal>
     </div>
   );
 };

@@ -43,7 +43,7 @@ const LoginPage = () => {
         <Button 
           size="lg"
           variant="default"
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/home')}
           className="mt-4"
         >
           Go to Home
