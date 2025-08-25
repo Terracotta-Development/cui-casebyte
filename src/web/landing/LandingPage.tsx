@@ -419,7 +419,7 @@ const LandingPage = () => {
       {/* Privacy Policy Modal */}
       <Modal isOpen={showPrivacyModal} onClose={() => setShowPrivacyModal(false)} title="Privacy Policy">
         <div className="space-y-4 text-[var(--foreground)] text-sm">
-          <p><strong>Last updated:</strong> January 2025</p>
+          <p><strong>Last updated:</strong> August 2025</p>
           
           <section>
             <h3 className="font-semibold text-base mb-2">Information We Collect</h3>
@@ -446,7 +446,7 @@ const LandingPage = () => {
       {/* Terms of Service Modal */}
       <Modal isOpen={showTermsModal} onClose={() => setShowTermsModal(false)} title="Terms of Service">
         <div className="space-y-4 text-[var(--foreground)] text-sm">
-          <p><strong>Last updated:</strong> January 2025</p>
+          <p><strong>Last updated:</strong> August 2025</p>
           
           <section>
             <h3 className="font-semibold text-base mb-2">Acceptance of Terms</h3>
