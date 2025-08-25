@@ -12,6 +12,7 @@ import { useAudioRecording } from '../../hooks/useAudioRecording';
 import { api } from '../../../chat/services/api';
 import { cn } from "../../lib/utils";
 import { usePostHog } from 'posthog-js/react';
+import { useAuth } from '../../../../web/hooks/useAuth';
 
 export interface FileSystemEntry {
   name: string;
@@ -322,6 +323,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
   onFetchCommands,
 }: ComposerProps, ref: React.Ref<ComposerRef>) {
   const posthog = usePostHog();
+  const { user } = useAuth();
   // Load cached state
   const [cachedState, setCachedState] = useLocalStorage<ComposerCache>('cui-composer', {
     selectedPermissionMode: 'bypassPermissions',
@@ -680,9 +682,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
     // Capture PostHog event with the prompt
     posthog?.capture('ask_button_clicked', {
       prompt: trimmedValue,
-      permission_mode: permissionMode,
-      working_directory: showDirectorySelector ? selectedDirectory : undefined,
-      model: showModelSelector ? selectedModel : undefined,
+      user_email: user?.email,
     });
 
     onSubmit(
