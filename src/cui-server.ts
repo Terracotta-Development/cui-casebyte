@@ -108,10 +108,17 @@ export class CUIServer {
     
     // Set up environment overrides for development mode (proxy support)
     const isDev = process.env.NODE_ENV === 'development';
-    const envOverrides = isDev ? {
-      http_proxy: process.env.http_proxy,
-      https_proxy: process.env.https_proxy
-    } : undefined;
+    let envOverrides: Record<string, string | undefined> | undefined;
+    
+    if (isDev && (process.env.http_proxy || process.env.https_proxy)) {
+      envOverrides = {};
+      if (process.env.http_proxy) {
+        envOverrides.http_proxy = process.env.http_proxy;
+      }
+      if (process.env.https_proxy) {
+        envOverrides.https_proxy = process.env.https_proxy;
+      }
+    }
     
     this.processManager = new ClaudeProcessManager(this.historyReader, this.statusTracker, undefined, envOverrides, this.toolMetricsService, this.sessionInfoService, this.fileSystemService);
     this.streamManager = new StreamManager();
