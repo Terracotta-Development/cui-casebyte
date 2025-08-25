@@ -105,7 +105,15 @@ export class CUIServer {
     this.statusTracker = this.conversationStatusManager; // Use the same instance for backward compatibility
     this.toolMetricsService = new ToolMetricsService();
     this.fileSystemService = new FileSystemService();
-    this.processManager = new ClaudeProcessManager(this.historyReader, this.statusTracker, undefined, undefined, this.toolMetricsService, this.sessionInfoService, this.fileSystemService);
+    
+    // Set up environment overrides for development mode (proxy support)
+    const isDev = process.env.NODE_ENV === 'development';
+    const envOverrides = isDev ? {
+      http_proxy: process.env.http_proxy,
+      https_proxy: process.env.https_proxy
+    } : undefined;
+    
+    this.processManager = new ClaudeProcessManager(this.historyReader, this.statusTracker, undefined, envOverrides, this.toolMetricsService, this.sessionInfoService, this.fileSystemService);
     this.streamManager = new StreamManager();
     this.permissionTracker = new PermissionTracker();
     this.mcpConfigGenerator = new MCPConfigGenerator(this.fileSystemService);
