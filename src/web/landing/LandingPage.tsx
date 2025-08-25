@@ -1,69 +1,23 @@
 import React from 'react';
+import { Button } from '../chat/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--background)',
-      color: 'var(--foreground)'
-    }}>
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Header */}
-      <header style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
-        backgroundColor: 'var(--background)',
-        borderBottom: '1px solid var(--border)',
-        backdropFilter: 'blur(8px)'
-      }}>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)] border-b border-[var(--border)] backdrop-blur-sm">
         <div className="container mx-auto px-6">
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '64px'
-          }}>
+          <div className="flex items-center justify-between h-16">
             <div>
-              <h1 style={{
-                fontSize: '1.5rem',
-                fontWeight: 'bold',
-                color: 'var(--foreground)',
-                margin: 0
-              }}>Casebyte</h1>
+              <h1 className="text-2xl font-bold text-[var(--foreground)] m-0">Casebyte</h1>
             </div>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem'
-            }}>
-              <button style={{
-                color: 'var(--muted-foreground)',
-                fontWeight: '500',
-                padding: '0.5rem 1rem',
-                borderRadius: 'var(--radius)',
-                border: 'none',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                transition: 'color var(--transition-fast)'
-              }} 
-              onMouseEnter={(e) => e.target.style.color = 'var(--foreground)'}
-              onMouseLeave={(e) => e.target.style.color = 'var(--muted-foreground)'}>
+            <div className="flex items-center gap-4">
+              <button className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] font-medium px-4 py-2 rounded-[var(--radius)] border-none bg-transparent cursor-pointer transition-colors duration-150">
                 Log In
               </button>
-              <button style={{
-                backgroundColor: 'var(--primary)',
-                color: 'var(--primary-foreground)',
-                fontWeight: '500',
-                padding: '0.5rem 1.5rem',
-                borderRadius: 'var(--radius)',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'opacity var(--transition-fast)'
-              }}
-              onMouseEnter={(e) => e.target.style.opacity = '0.9'}
-              onMouseLeave={(e) => e.target.style.opacity = '1'}>
+              <button className="bg-[var(--primary)] text-[var(--primary-foreground)] font-medium px-6 py-2 rounded-[var(--radius)] border-none cursor-pointer hover:opacity-90 transition-opacity duration-150">
                 Sign Up
               </button>
             </div>
@@ -72,169 +26,44 @@ const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section style={{
-        backgroundColor: 'var(--background)',
-        paddingTop: '8rem',
-        paddingBottom: '6rem'
-      }}>
+      <section className="bg-[var(--background)] pt-32 pb-24">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
             <div className="lg:w-1/2 space-y-8">
               <div className="space-y-6">
-                <h1 style={{
-                  fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                  fontWeight: 'bold',
-                  color: 'var(--foreground)',
-                  lineHeight: '1.1',
-                  margin: 0
-                }}>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--foreground)] leading-tight m-0">
                   Find the Hong Kong cases that matter. In seconds, not hours.
                 </h1>
-                <p style={{
-                  fontSize: '1.25rem',
-                  color: 'var(--muted-foreground)',
-                  lineHeight: '1.6',
-                  fontWeight: '300',
-                  margin: 0
-                }}>
+                <p className="text-xl text-[var(--muted-foreground)] leading-relaxed font-light m-0">
                   An AI research assistant trained specifically on the Hong Kong judiciary. 
                   Pinpoint relevant precedents, optimize your arguments, and never miss a deadline.
                 </p>
               </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1rem'
-              }} className="sm:flex-row">
-                <button style={{
-                  backgroundColor: 'var(--primary)',
-                  color: 'var(--primary-foreground)',
-                  fontWeight: '600',
-                  padding: '1rem 2.5rem',
-                  borderRadius: 'var(--radius-lg)',
-                  border: 'none',
-                  cursor: 'pointer',
-                  boxShadow: 'var(--shadow-md)',
-                  transition: 'all var(--transition-normal)',
-                  transform: 'translateY(0)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.opacity = '0.9';
-                  e.target.style.boxShadow = 'var(--shadow-lg)';
-                  e.target.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.opacity = '1';
-                  e.target.style.boxShadow = 'var(--shadow-md)';
-                  e.target.style.transform = 'translateY(0)';
-                }}>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  onClick={() => navigate('/signin')}
+                  className="bg-[var(--primary)] text-[var(--primary-foreground)] font-semibold py-4 px-10 rounded-[var(--radius-lg)] border-none shadow-[var(--shadow-md)] hover:opacity-90 hover:shadow-[var(--shadow-lg)] hover:-translate-y-0.5 transition-all duration-300 transform"
+                >
                   Get Started
-                </button>
-                {/* <button style={{
-                  backgroundColor: 'var(--background)',
-                  color: 'var(--muted-foreground)',
-                  fontWeight: '600',
-                  padding: '1rem 2.5rem',
-                  borderRadius: 'var(--radius-lg)',
-                  border: '2px solid var(--border)',
-                  cursor: 'pointer',
-                  transition: 'all var(--transition-normal)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.borderColor = 'var(--primary)';
-                  e.target.style.color = 'var(--primary)';
-                  e.target.style.backgroundColor = 'var(--secondary)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.borderColor = 'var(--border)';
-                  e.target.style.color = 'var(--muted-foreground)';
-                  e.target.style.backgroundColor = 'var(--background)';
-                }}>
-                  How lawyers use our tool
-                </button> */}
+                </Button>
               </div>
             </div>
-            <div className="lg:w-1/2">
-              <div style={{
-                backgroundColor: 'var(--card)',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: 'var(--shadow-lg)',
-                padding: '2rem',
-                border: '1px solid var(--border)'
-              }}>
-                <div style={{
-                  backgroundColor: 'var(--muted)',
-                  borderRadius: 'var(--radius)',
-                  padding: '1.5rem',
-                  marginBottom: '1.5rem',
-                  border: '1px solid var(--border)'
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    gap: '0.75rem',
-                    marginBottom: '1rem'
-                  }}>
-                    <div style={{
-                      width: '14px',
-                      height: '14px',
-                      borderRadius: '50%',
-                      backgroundColor: '#ef4444',
-                      boxShadow: 'var(--shadow-sm)'
-                    }}></div>
-                    <div style={{
-                      width: '14px',
-                      height: '14px',
-                      borderRadius: '50%',
-                      backgroundColor: '#f59e0b',
-                      boxShadow: 'var(--shadow-sm)'
-                    }}></div>
-                    <div style={{
-                      width: '14px',
-                      height: '14px',
-                      borderRadius: '50%',
-                      backgroundColor: '#10b981',
-                      boxShadow: 'var(--shadow-sm)'
-                    }}></div>
+            <div className="lg:w-1/2" id="searchBox">
+              <div className="bg-[var(--card)] rounded-[var(--radius-lg)] shadow-[var(--shadow-lg)] p-8 border border-[var(--border)]">
+                <div className="bg-[var(--muted)] rounded-[var(--radius)] p-6 mb-6 border border-[var(--border)]">
+                  <div className="flex gap-3 mb-4">
+                    <div className="w-3.5 h-3.5 rounded-full bg-red-400 shadow-[var(--shadow-sm)]"></div>
+                    <div className="w-3.5 h-3.5 rounded-full bg-yellow-400 shadow-[var(--shadow-sm)]"></div>
+                    <div className="w-3.5 h-3.5 rounded-full bg-green-400 shadow-[var(--shadow-sm)]"></div>
                   </div>
-                  <div style={{
-                    backgroundColor: 'var(--background)',
-                    padding: '1.25rem',
-                    borderRadius: 'var(--radius)',
-                    boxShadow: 'var(--shadow-sm)',
-                    border: '1px solid var(--border)'
-                  }}>
-                    <p style={{
-                      color: 'var(--muted-foreground)',
-                      fontWeight: '500',
-                      margin: 0
-                    }}>Search: "monetary claim dispute quantum calculation methods"</p>
+                  <div className="bg-[var(--background)] p-5 rounded-[var(--radius)] shadow-[var(--shadow-sm)] border border-[var(--border)]">
+                    <p className="text-[var(--muted-foreground)] font-medium m-0">Search: "monetary claim dispute quantum calculation methods"</p>
                   </div>
                 </div>
-                <div style={{
-                  backgroundColor: 'var(--secondary)',
-                  borderRadius: 'var(--radius)',
-                  padding: '1.5rem',
-                  border: '1px solid var(--border)'
-                }}>
-                  <h3 style={{
-                    fontWeight: 'bold',
-                    color: 'var(--foreground)',
-                    marginBottom: '0.75rem',
-                    fontSize: '1.125rem',
-                    margin: '0 0 0.75rem 0'
-                  }}>[Case Name 2018] HKCFI 567</h3>
-                  <p style={{
-                    color: 'var(--secondary-foreground)',
-                    fontSize: '0.875rem',
-                    marginBottom: '0.75rem',
-                    fontWeight: '500',
-                    margin: '0 0 0.75rem 0'
-                  }}>Relevant paragraphs: 42-48, 56-61</p>
-                  <p style={{
-                    color: 'var(--muted-foreground)',
-                    lineHeight: '1.6',
-                    margin: 0
-                  }}>
+                <div className="bg-[var(--secondary)] rounded-[var(--radius)] p-6 border border-[var(--border)]">
+                  <h3 className="font-bold text-[var(--foreground)] mb-3 text-lg m-0">[Case Name 2018] HKCFI 567</h3>
+                  <p className="text-[var(--secondary-foreground)] text-sm mb-3 font-medium m-0">Relevant paragraphs: 42-48, 56-61</p>
+                  <p className="text-[var(--muted-foreground)] leading-relaxed m-0">
                     The court established that quantum calculations must consider contemporary market factors...
                   </p>
                 </div>
@@ -244,31 +73,13 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section style={{
-        padding: '6rem 0',
-        backgroundColor: 'var(--muted)'
-      }}>
+      <section className="py-24 bg-[var(--muted)]">
         <div className="container mx-auto px-6">
-          <div style={{
-            textAlign: 'center',
-            marginBottom: '5rem'
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              fontWeight: 'bold',
-              color: 'var(--foreground)',
-              marginBottom: '1.5rem',
-              margin: '0 0 1.5rem 0'
-            }}>
+          <div className="text-center mb-20">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--foreground)] mb-6 m-0">
               Less Searching. Faster Progress.
             </h2>
-            <div style={{
-              width: '96px',
-              height: '4px',
-              backgroundColor: 'var(--primary)',
-              margin: '0 auto',
-              borderRadius: '2px'
-            }}></div>
+            <div className="w-24 h-1 bg-[var(--primary)] mx-auto rounded-sm"></div>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -510,137 +321,40 @@ const LandingPage = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section style={{
-        padding: '6rem 0',
-        backgroundColor: 'var(--primary)',
-        color: 'var(--primary-foreground)'
-      }}>
-        <div className="container mx-auto px-6" style={{ textAlign: 'center' }}>
-          <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 3rem)',
-            fontWeight: 'bold',
-            marginBottom: '2rem',
-            lineHeight: '1.2',
-            margin: '0 0 2rem 0'
-          }}>
+      <section className="py-24 bg-[var(--primary)] text-[var(--primary-foreground)]">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 leading-tight m-0">
             Reclaim Your Time and Focus on Your Strategy
           </h2>
-          <p style={{
-            fontSize: '1.25rem',
-            marginBottom: '3rem',
-            maxWidth: '64rem',
-            margin: '0 auto 3rem auto',
-            lineHeight: '1.6',
-            fontWeight: '300',
-            opacity: '0.9'
-          }}>
+          <p className="text-xl max-w-4xl mx-auto mb-12 leading-relaxed font-light opacity-90 m-0">
             Use our AI assistant to enhance your practice.
           </p>
-          <button style={{
-            backgroundColor: 'var(--background)',
-            color: 'var(--primary)',
-            fontWeight: 'bold',
-            padding: '1.25rem 3rem',
-            borderRadius: 'var(--radius-lg)',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '1.125rem',
-            transition: 'all var(--transition-normal)',
-            boxShadow: 'var(--shadow-lg)',
-            transform: 'translateY(0)'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = 'var(--muted)';
-            e.target.style.boxShadow = 'var(--shadow-lg)';
-            e.target.style.transform = 'translateY(-4px)';
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = 'var(--background)';
-            e.target.style.boxShadow = 'var(--shadow-md)';
-            e.target.style.transform = 'translateY(0)';
-          }}>
+          <button className="bg-[var(--background)] text-[var(--primary)] font-bold py-5 px-12 rounded-[var(--radius-lg)] border-none cursor-pointer text-lg shadow-[var(--shadow-lg)] hover:bg-[var(--muted)] hover:-translate-y-1 transition-all duration-300 transform">
             Start Your Free Trial Now
           </button>
         </div>
       </section>
 
-      <footer style={{
-        backgroundColor: 'var(--accent)',
-        color: 'var(--accent-foreground)',
-        padding: '4rem 0'
-      }}>
+      <footer className="bg-[var(--accent)] text-[var(--accent-foreground)] py-16">
         <div className="container mx-auto px-6">
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '1.5rem'
-          }} className="md:flex-row md:space-y-0">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
             <div>
-              <p style={{
-                fontSize: '0.875rem',
-                fontWeight: '500',
-                margin: 0,
-                opacity: '0.8'
-              }}>© 2023 Casebyte. All rights reserved.</p>
+              <p className="text-sm font-medium opacity-80 m-0">© 2023 Casebyte. All rights reserved.</p>
             </div>
-            <div style={{
-              display: 'flex',
-              gap: '2rem'
-            }}>
-              <a href="#" style={{
-                fontSize: '0.875rem',
-                color: 'inherit',
-                textDecoration: 'none',
-                fontWeight: '500',
-                transition: 'opacity var(--transition-fast)',
-                opacity: '0.8'
-              }}
-              onMouseEnter={(e) => e.target.style.opacity = '1'}
-              onMouseLeave={(e) => e.target.style.opacity = '0.8'}>
+            <div className="flex gap-8">
+              <a href="#" className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150">
                 Privacy Policy
               </a>
-              <a href="#" style={{
-                fontSize: '0.875rem',
-                color: 'inherit',
-                textDecoration: 'none',
-                fontWeight: '500',
-                transition: 'opacity var(--transition-fast)',
-                opacity: '0.8'
-              }}
-              onMouseEnter={(e) => e.target.style.opacity = '1'}
-              onMouseLeave={(e) => e.target.style.opacity = '0.8'}>
+              <a href="#" className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150">
                 Terms of Service
               </a>
-              <a href="#" style={{
-                fontSize: '0.875rem',
-                color: 'inherit',
-                textDecoration: 'none',
-                fontWeight: '500',
-                transition: 'opacity var(--transition-fast)',
-                opacity: '0.8'
-              }}
-              onMouseEnter={(e) => e.target.style.opacity = '1'}
-              onMouseLeave={(e) => e.target.style.opacity = '0.8'}>
+              <a href="#" className="text-sm no-underline font-medium opacity-80 hover:opacity-100 transition-opacity duration-150">
                 Contact Info
               </a>
             </div>
           </div>
-          <div style={{
-            marginTop: '2rem',
-            paddingTop: '2rem',
-            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              width: '96px',
-              height: '4px',
-              backgroundColor: 'var(--primary)',
-              margin: '0 auto',
-              borderRadius: '2px',
-              opacity: '0.5'
-            }}></div>
+          <div className="mt-8 pt-8 border-t border-white/10 text-center">
+            <div className="w-24 h-1 bg-[var(--primary)] mx-auto rounded-sm opacity-50"></div>
           </div>
         </div>
       </footer>
