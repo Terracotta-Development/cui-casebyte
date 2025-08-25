@@ -56,10 +56,13 @@ const LoginPage = () => {
     <div className="fixed inset-0 flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-[400px] space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-2xl font-semibold">{success ? 'Check your email' : 'Sign in'}</h1>
+          <h1 className="text-2xl font-semibold">{success ? 'Please check your email' : 'Sign in'}</h1>
           <p className="text-muted-foreground">
             {success 
-              ? `We've sent a login link to ${email}`
+              ? <>
+                We've sent a login link to {email}. <br />
+                Please check your spam folder if you do not see an email from us.
+                </>
               : 'Enter your email to sign in to your account'
             }
           </p>
