@@ -111,7 +111,7 @@ const LandingPage = () => {
                           }}
                           result={JSON.stringify({
                             query: '"duty to avoid conflicts of interest" OR "conflict of interest" OR "fiduciary duty" OR "breach of fiduciary duty"',
-                            result_count: 3,
+                            result_count: 2,
                             results: [
                               {
                                 id: "hkcfi_2024_3729",
