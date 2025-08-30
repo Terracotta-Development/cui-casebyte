@@ -158,6 +158,7 @@ const LandingPage = () => {
                     enableFileAutocomplete={false}
                     showPermissionUI={false}
                     showStopButton={false}
+                    showDisclaimer={false}
                   />
                 </div>
               </div>

@@ -42,6 +42,7 @@ export interface ComposerProps {
   enableFileAutocomplete?: boolean;
   showPermissionUI?: boolean;
   showStopButton?: boolean;
+  showDisclaimer?: boolean;
 
   // Directory selection
   workingDirectory?: string;
@@ -305,6 +306,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
   enableFileAutocomplete = false,
   showPermissionUI = false,
   showStopButton = false,
+  showDisclaimer = false,
   workingDirectory = '',
   onDirectoryChange,
   recentDirectories = {},
@@ -1123,11 +1125,13 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
       </form>
       
       {/* Disclaimer - Fixed at bottom of viewport */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 text-center pointer-events-none">
-        <p className="text-xs text-muted-foreground/60 leading-relaxed">
-          Casebyte can make mistakes. Responses do not constitute legal advice.
-        </p>
-      </div>
+      {showDisclaimer && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 text-center pointer-events-none">
+          <p className="text-xs text-muted-foreground/60 leading-relaxed">
+            Casebyte can make mistakes. Responses do not constitute legal advice.
+          </p>
+        </div>
+      )}
     </>
   );
 });
