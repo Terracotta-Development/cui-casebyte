@@ -843,282 +843,291 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
   };
 
   return (
-    <form 
-      ref={composerRef}
-      className="mx-6 relative" 
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(selectedPermissionMode);
-      }}
-    >
-      <div className="flex flex-col items-center justify-center w-full bg-transparent border border-border rounded-3xl shadow-sm cursor-text transition-all duration-300">
-        <div className="relative flex items-end w-full min-h-[73px]">
-          <div className="relative flex flex-1 items-start mx-5 min-h-[73px]">
-            {audioState === 'recording' || audioState === 'processing' ? (
-              <div className="w-full min-h-[80px] pb-[34px] bg-transparent overflow-hidden flex items-center justify-start">
-                <WaveformVisualizer
-                  audioData={audioData}
-                  isRecording={audioState === 'recording'}
-                  isPaused={audioState === 'processing'}
+    <>
+      <form 
+        ref={composerRef}
+        className="mx-6 relative" 
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(selectedPermissionMode);
+        }}
+      >
+        <div className="flex flex-col items-center justify-center w-full bg-transparent border border-border rounded-3xl shadow-sm cursor-text transition-all duration-300">
+          <div className="relative flex items-end w-full min-h-[73px]">
+            <div className="relative flex flex-1 items-start mx-5 min-h-[73px]">
+              {audioState === 'recording' || audioState === 'processing' ? (
+                <div className="w-full min-h-[80px] pb-[34px] bg-transparent overflow-hidden flex items-center justify-start">
+                  <WaveformVisualizer
+                    audioData={audioData}
+                    isRecording={audioState === 'recording'}
+                    isPaused={audioState === 'processing'}
+                  />
+                </div>
+              ) : (
+                <Textarea
+                  ref={textareaRef}
+                  className="min-h-[80px] max-h-[80vh] pt-4 pr-[60px] pb-[50px] border-none bg-transparent text-foreground font-sans text-base leading-relaxed resize-none outline-none overflow-y-auto scrollbar-thin ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  placeholder={permissionRequest && showPermissionUI ? "Deny and tell Claude what to do" : placeholder}
+                  value={value}
+                  onChange={handleTextChange}
+                  onKeyDown={handleKeyDown}
+                  rows={1}
+                  disabled={(isLoading || disabled) && !(permissionRequest && showPermissionUI)}
                 />
-              </div>
-            ) : (
-              <Textarea
-                ref={textareaRef}
-                className="min-h-[80px] max-h-[80vh] pt-4 pr-[60px] pb-[50px] border-none bg-transparent text-foreground font-sans text-base leading-relaxed resize-none outline-none overflow-y-auto scrollbar-thin ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                placeholder={permissionRequest && showPermissionUI ? "Deny and tell Claude what to do" : placeholder}
-                value={value}
-                onChange={handleTextChange}
-                onKeyDown={handleKeyDown}
-                rows={1}
-                disabled={(isLoading || disabled) && !(permissionRequest && showPermissionUI)}
-              />
-            )}
-            
-            {/* Hidden textarea during processing for text insertion */}
-            {audioState === 'processing' && (
-              <textarea
-                ref={textareaRef}
-                className="absolute opacity-0 pointer-events-none -top-[9999px]"
-                value={value}
-                onChange={handleTextChange}
-                rows={1}
-                disabled
-              />
-            )}
-            
-          </div>
+              )}
+              
+              {/* Hidden textarea during processing for text insertion */}
+              {audioState === 'processing' && (
+                <textarea
+                  ref={textareaRef}
+                  className="absolute opacity-0 pointer-events-none -top-[9999px]"
+                  value={value}
+                  onChange={handleTextChange}
+                  rows={1}
+                  disabled
+                />
+              )}
+              
+            </div>
 
-          {(showDirectorySelector || showModelSelector) && audioState === 'idle' && (
-            <div className="absolute bottom-2 left-6 right-10 flex items-center justify-center overflow-visible">
-              <div className="flex gap-2 w-full justify-between">
-                <div className="flex gap-2">
-                  {/* Working Directory Selector */}
-                  {showDirectorySelector && (
-                    <DirectoryDropdown
-                      selectedDirectory={selectedDirectory}
-                      recentDirectories={recentDirectories}
-                      onDirectorySelect={handleDirectorySelect}
-                    />
-                  )}
+            {(showDirectorySelector || showModelSelector) && audioState === 'idle' && (
+              <div className="absolute bottom-2 left-6 right-10 flex items-center justify-center overflow-visible">
+                <div className="flex gap-2 w-full justify-between">
+                  <div className="flex gap-2">
+                    {/* Working Directory Selector */}
+                    {showDirectorySelector && (
+                      <DirectoryDropdown
+                        selectedDirectory={selectedDirectory}
+                        recentDirectories={recentDirectories}
+                        onDirectorySelect={handleDirectorySelect}
+                      />
+                    )}
 
-                  {/* Model Selector */}
-                  {showModelSelector && (
-                    <ModelDropdown
-                      selectedModel={selectedModel}
-                      availableModels={availableModels}
-                      onModelSelect={handleModelSelect}
-                    />
-                  )}
+                    {/* Model Selector */}
+                    {showModelSelector && (
+                      <ModelDropdown
+                        selectedModel={selectedModel}
+                        availableModels={availableModels}
+                        onModelSelect={handleModelSelect}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-
-          {/* Dynamic Action Button */}
-          <div className="absolute right-2.5 bottom-2 flex items-center justify-center gap-2">
-            {audioState === 'recording' || audioState === 'processing' ? (
-              /* Recording/Processing State: Show tick and cross */
-              <div className="flex items-center gap-2">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="icon"
-                        className="w-8 h-8 hover:scale-[1.03]"
-                        onClick={handleAcceptRecording}
-                        disabled={audioState === 'processing'}
-                      >
-                        {audioState === 'processing' ? (
-                          <Loader2 size={16} className="animate-spin" />
-                        ) : (
-                          <Check size={16} />
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{audioState === 'processing' ? 'Processing...' : 'Accept recording'}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="icon"
-                        className="w-8 h-8 hover:scale-[1.03]"
-                        onClick={handleRejectRecording}
-                        disabled={audioState === 'processing'}
-                      >
-                        <X size={16} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Discard recording</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            ) : (
-              /* Idle State: Show mic button */
-              false && isAudioSupported && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className={cn(
-                          "h-8 px-2 text-muted-foreground hover:bg-muted/50 rounded-full",
-                          audioError && "bg-red-300 text-red-900 hover:bg-red-400 hover:text-red-950"
-                        )}
-                        onClick={handleMicClick}
-                        disabled={disabled}
-                      >
-                        {audioError ? <MicOff size={16} /> : <Mic size={16} />}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{audioError ? `Error: ${audioError}` : 'Start voice recording'}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )
             )}
-            
-            {permissionRequest && showPermissionUI ? (
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  className="h-8 min-w-[60px] px-3 py-0.5 bg-blue-600 text-white hover:bg-blue-700 border-0 shadow-none rounded-full flex items-center gap-1.5"
-                  onClick={() => onPermissionDecision?.(permissionRequest.id, 'approve')}
-                >
-                  <Check size={14} />
-                  <span>Accept</span>
-                </Button>
-                <Button
-                  type="button"
-                  className="h-8 min-w-[60px] px-3 py-0.5 bg-muted text-muted-foreground hover:bg-muted/80 border-0 shadow-none rounded-full flex items-center gap-1.5"
-                  onClick={() => {
-                    const denyReason = value.trim();
-                    onPermissionDecision?.(permissionRequest.id, 'deny', denyReason || undefined);
-                    setValue('');
-                  }}
-                >
-                  <X size={14} />
-                  <span>Deny</span>
-                </Button>
-              </div>
-            ) : isLoading && showStopButton ? (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      size="icon"
-                      className="w-8 h-8 hover:scale-[1.03] rounded-full"
-                      onClick={() => onStop?.()}
-                    >
-                      <Square size={18} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Stop generation</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ) : audioState === 'idle' && (
-              <div className="flex items-center gap-2">
-                {/* Combined Permission Mode Button with Dropdown */}
-                <div className={`flex items-center rounded-full overflow-hidden ${
-                  (!value.trim() || isLoading || disabled || (showDirectorySelector && selectedDirectory === 'Select directory'))
-                    ? 'bg-foreground/5 text-foreground/50'
-                    : 'bg-foreground text-background'
-                }`}>
+
+            {/* Dynamic Action Button */}
+            <div className="absolute right-2.5 bottom-2 flex items-center justify-center gap-2">
+              {audioState === 'recording' || audioState === 'processing' ? (
+                /* Recording/Processing State: Show tick and cross */
+                <div className="flex items-center gap-2">
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
                           type="button"
-                          className="h-8 min-w-[48px] w-[48px] px-3 py-0.5 bg-transparent text-inherit hover:bg-white/10 border-0 shadow-none"
-                          disabled={!value.trim() || isLoading || disabled || (showDirectorySelector && selectedDirectory === 'Select directory')}
-                          onClick={() => handleSubmit(selectedPermissionMode)}
+                          variant="secondary"
+                          size="icon"
+                          className="w-8 h-8 hover:scale-[1.03]"
+                          onClick={handleAcceptRecording}
+                          disabled={audioState === 'processing'}
                         >
-                          {isLoading ? <Loader2 size={14} className="animate-spin" /> : getPermissionModeLabel(selectedPermissionMode)}
+                          {audioState === 'processing' ? (
+                            <Loader2 size={16} className="animate-spin" />
+                          ) : (
+                            <Check size={16} />
+                          )}
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{getPermissionModeTitle(selectedPermissionMode)}</p>
+                        <p>{audioState === 'processing' ? 'Processing...' : 'Accept recording'}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                  {/* <DropdownSelector
-                    options={[
-                      { value: 'default', label: 'Ask', description: 'Ask before making changes' },
-                      { value: 'acceptEdits', label: 'Auto', description: 'Apply edits automatically' },
-                      { value: 'bypassPermissions', label: 'Yolo', description: 'No permission prompts' },
-                      { value: 'plan', label: 'Plan', description: 'Planning mode only' },
-                    ]}
-                    value={selectedPermissionMode}
-                    onChange={setSelectedPermissionMode}
-                    isOpen={isPermissionDropdownOpen}
-                    onOpenChange={setIsPermissionDropdownOpen}
-                    showFilterInput={false}
-                    renderOption={(option) => (
-                      <div className="flex flex-col items-start gap-0.5 w-full">
-                        <div className="flex items-center gap-2">
-                          {getPermissionModeIcon(option.value)}
-                          <span className="text-sm font-medium">{option.label}</span>
-                        </div>
-                        {option.description && (
-                          <span className="text-xs text-muted-foreground/80 pl-[22px]">{option.description}</span>
-                        )}
-                      </div>
-                    )}
-                    renderTrigger={({ onClick }) => (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="secondary"
+                          size="icon"
+                          className="w-8 h-8 hover:scale-[1.03]"
+                          onClick={handleRejectRecording}
+                          disabled={audioState === 'processing'}
+                        >
+                          <X size={16} />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Discard recording</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              ) : (
+                /* Idle State: Show mic button */
+                false && isAudioSupported && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className={cn(
+                            "h-8 px-2 text-muted-foreground hover:bg-muted/50 rounded-full",
+                            audioError && "bg-red-300 text-red-900 hover:bg-red-400 hover:text-red-950"
+                          )}
+                          onClick={handleMicClick}
+                          disabled={disabled}
+                        >
+                          {audioError ? <MicOff size={16} /> : <Mic size={16} />}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{audioError ? `Error: ${audioError}` : 'Start voice recording'}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )
+              )}
+              
+              {permissionRequest && showPermissionUI ? (
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    className="h-8 min-w-[60px] px-3 py-0.5 bg-blue-600 text-white hover:bg-blue-700 border-0 shadow-none rounded-full flex items-center gap-1.5"
+                    onClick={() => onPermissionDecision?.(permissionRequest.id, 'approve')}
+                  >
+                    <Check size={14} />
+                    <span>Accept</span>
+                  </Button>
+                  <Button
+                    type="button"
+                    className="h-8 min-w-[60px] px-3 py-0.5 bg-muted text-muted-foreground hover:bg-muted/80 border-0 shadow-none rounded-full flex items-center gap-1.5"
+                    onClick={() => {
+                      const denyReason = value.trim();
+                      onPermissionDecision?.(permissionRequest.id, 'deny', denyReason || undefined);
+                      setValue('');
+                    }}
+                  >
+                    <X size={14} />
+                    <span>Deny</span>
+                  </Button>
+                </div>
+              ) : isLoading && showStopButton ? (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
                       <Button
                         type="button"
-                        className="w-8 h-8 bg-transparent text-inherit border-l border-white/20 opacity-80 hover:opacity-100 hover:bg-white/10 border-0 shadow-none rounded-none flex items-center justify-center p-0"
-                        onClick={onClick}
-                        disabled={!value.trim() || isLoading || disabled || (showDirectorySelector && selectedDirectory === 'Select directory')}
-                        aria-label="Select permission mode"
+                        size="icon"
+                        className="w-8 h-8 hover:scale-[1.03] rounded-full"
+                        onClick={() => onStop?.()}
                       >
-                        <ChevronDown size={14} />
+                        <Square size={18} />
                       </Button>
-                    )}
-                  /> */}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Stop generation</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : audioState === 'idle' && (
+                <div className="flex items-center gap-2">
+                  {/* Combined Permission Mode Button with Dropdown */}
+                  <div className={`flex items-center rounded-full overflow-hidden ${
+                    (!value.trim() || isLoading || disabled || (showDirectorySelector && selectedDirectory === 'Select directory'))
+                      ? 'bg-foreground/5 text-foreground/50'
+                      : 'bg-foreground text-background'
+                  }`}>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            type="button"
+                            className="h-8 min-w-[48px] w-[48px] px-3 py-0.5 bg-transparent text-inherit hover:bg-white/10 border-0 shadow-none"
+                            disabled={!value.trim() || isLoading || disabled || (showDirectorySelector && selectedDirectory === 'Select directory')}
+                            onClick={() => handleSubmit(selectedPermissionMode)}
+                          >
+                            {isLoading ? <Loader2 size={14} className="animate-spin" /> : getPermissionModeLabel(selectedPermissionMode)}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{getPermissionModeTitle(selectedPermissionMode)}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    {/* <DropdownSelector
+                      options={[
+                        { value: 'default', label: 'Ask', description: 'Ask before making changes' },
+                        { value: 'acceptEdits', label: 'Auto', description: 'Apply edits automatically' },
+                        { value: 'bypassPermissions', label: 'Yolo', description: 'No permission prompts' },
+                        { value: 'plan', label: 'Plan', description: 'Planning mode only' },
+                      ]}
+                      value={selectedPermissionMode}
+                      onChange={setSelectedPermissionMode}
+                      isOpen={isPermissionDropdownOpen}
+                      onOpenChange={setIsPermissionDropdownOpen}
+                      showFilterInput={false}
+                      renderOption={(option) => (
+                        <div className="flex flex-col items-start gap-0.5 w-full">
+                          <div className="flex items-center gap-2">
+                            {getPermissionModeIcon(option.value)}
+                            <span className="text-sm font-medium">{option.label}</span>
+                          </div>
+                          {option.description && (
+                            <span className="text-xs text-muted-foreground/80 pl-[22px]">{option.description}</span>
+                          )}
+                        </div>
+                      )}
+                      renderTrigger={({ onClick }) => (
+                        <Button
+                          type="button"
+                          className="w-8 h-8 bg-transparent text-inherit border-l border-white/20 opacity-80 hover:opacity-100 hover:bg-white/10 border-0 shadow-none rounded-none flex items-center justify-center p-0"
+                          onClick={onClick}
+                          disabled={!value.trim() || isLoading || disabled || (showDirectorySelector && selectedDirectory === 'Select directory')}
+                          aria-label="Select permission mode"
+                        >
+                          <ChevronDown size={14} />
+                        </Button>
+                      )}
+                    /> */}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
+        
+        {/* Autocomplete Dropdown */}
+        {(enableFileAutocomplete || onFetchCommands) && (
+          <AutocompleteDropdown
+            suggestions={autocomplete.suggestions}
+            onSelect={handleAutocompleteSelection}
+            onClose={resetAutocomplete}
+            isOpen={autocomplete.isActive && autocomplete.suggestions.length > 0}
+            focusedIndex={autocomplete.focusedIndex}
+            type={autocomplete.type}
+            onFocusReturn={() => textareaRef.current?.focus()}
+          />
+        )}
+        
+        {/* Permission Dialog */}
+        {permissionRequest && showPermissionUI && (
+          <PermissionDialog 
+            permissionRequest={permissionRequest}
+            isVisible={true}
+          />
+        )}
+      </form>
+      
+      {/* Disclaimer - Fixed at bottom of viewport */}
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 text-center pointer-events-none">
+        <p className="text-xs text-muted-foreground/60 leading-relaxed">
+          Casebyte can make mistakes. Responses do not constitute legal advice.
+        </p>
       </div>
-      
-      {/* Autocomplete Dropdown */}
-      {(enableFileAutocomplete || onFetchCommands) && (
-        <AutocompleteDropdown
-          suggestions={autocomplete.suggestions}
-          onSelect={handleAutocompleteSelection}
-          onClose={resetAutocomplete}
-          isOpen={autocomplete.isActive && autocomplete.suggestions.length > 0}
-          focusedIndex={autocomplete.focusedIndex}
-          type={autocomplete.type}
-          onFocusReturn={() => textareaRef.current?.focus()}
-        />
-      )}
-      
-      {/* Permission Dialog */}
-      {permissionRequest && showPermissionUI && (
-        <PermissionDialog 
-          permissionRequest={permissionRequest}
-          isVisible={true}
-        />
-      )}
-    </form>
+    </>
   );
 });
