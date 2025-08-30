@@ -44,10 +44,16 @@ const LandingPage = () => {
               <h1 className="text-2xl font-bold text-[var(--foreground)] m-0">Casebyte</h1>
             </div>
             <div className="flex items-center gap-4">
-              <button className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] font-medium px-4 py-2 rounded-[var(--radius)] border-none bg-transparent cursor-pointer transition-colors duration-150">
+              <button 
+                className="text-[var(--muted-foreground)] hover:text-[var(--foreground)] font-medium px-4 py-2 rounded-[var(--radius)] border-none bg-transparent cursor-pointer transition-colors duration-150"
+                onClick={() => navigate('/signin')}
+              >
                 Log In
               </button>
-              <button className="bg-[var(--primary)] text-[var(--primary-foreground)] font-medium px-6 py-2 rounded-[var(--radius)] border-none cursor-pointer hover:opacity-90 transition-opacity duration-150">
+              <button 
+                className="bg-[var(--primary)] text-[var(--primary-foreground)] font-medium px-6 py-2 rounded-[var(--radius)] border-none cursor-pointer hover:opacity-90 transition-opacity duration-150"
+                onClick={() => navigate('/signin')}
+              >
                 Sign Up
               </button>
             </div>
@@ -401,7 +407,10 @@ const LandingPage = () => {
                   <span className="text-gray-700 font-medium">10 queries / month</span>
                 </li>
               </ul>
-              <button className="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+              <button 
+                className="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+                onClick={() => navigate('/signin')}
+              >
                 Start Now
               </button>
             </div>
@@ -427,7 +436,10 @@ const LandingPage = () => {
                     <span className="text-gray-700 font-medium">100 queries / month</span>
                   </li>
                 </ul>
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <button 
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  onClick={() => navigate('/signin')}
+                >
                   Start Now
                 </button>
               </div>
@@ -449,7 +461,10 @@ const LandingPage = () => {
                   <span className="text-gray-700 font-medium">500 queries / month</span>
                 </li>
               </ul>
-              <button className="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+              <button 
+                className="w-full bg-gray-900 hover:bg-black text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
+                onClick={() => navigate('/signin')}
+              >
                 Start Now
               </button>
             </div>
