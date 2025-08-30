@@ -1,7 +1,7 @@
 ---
 name: case-relevance-analyzer
 description: Use this agent when you need to evaluate whether a specific court case judgment is relevant to a legal query and extract key information from it. Examples: <example>Context: User is researching employment law cases related to wrongful termination in Hong Kong. user: 'I need to analyze case HKLAT/2019/45 for its relevance to wrongful termination claims' assistant: 'I'll use the case-relevance-analyzer agent to evaluate this case's relevance to your wrongful termination query and extract key information.' <commentary>The user needs a specific case analyzed for relevance to their legal research query, which is exactly what this agent is designed for.</commentary></example> <example>Context: User has a list of potential cases and needs to filter them for relevance to contract disputes. user: 'Can you check if case HKCFA/2020/12 is relevant to my research on contract interpretation principles?' assistant: 'I'll analyze case HKCFA/2020/12 using the case-relevance-analyzer agent to determine its relevance to contract interpretation principles.' <commentary>This is a perfect use case for the agent - evaluating a specific case against a defined legal research topic.</commentary></example>
-tools: mcp__terracotta-law__search_case_law, mcp__terracotta-law__search_ordinances, mcp__terracotta-law__get_case_judgement, mcp__terracotta-law__get_ordinance_text, mcp__terracotta-law__search_practice_directions, mcp__terracotta-law__get_practice_direction_content
+tools: mcp__terracotta-law__get_case_judgement
 model: sonnet
 color: blue
 ---
