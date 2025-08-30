@@ -103,7 +103,6 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
             <h4 className="font-medium text-sm">{ordinance.title}</h4>
             <div className="text-xs text-muted-foreground mt-1">
               <div>Chapter {ordinance.chapter_number}: {ordinance.chapter_title}</div>
-              <div>Ingestion Date: {ordinance.ingestion_date}</div>
             </div>
             {ordinance.highlights.length > 0 && (
               <div className="mt-2 text-xs">
