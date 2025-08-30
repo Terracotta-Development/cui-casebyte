@@ -190,40 +190,6 @@ export function createConversationRoutes(
         previousMessageCount: previousMessages.length
       });
 
-      // Send ntfy notification for user activity
-      if (process.env.NTFY_TOPIC) {
-        try {
-          // Get user info from session
-          fetch(`${req.protocol}://${req.get('host')}/auth/session`, {
-            headers: {
-              'Cookie': req.headers.cookie || '',
-              'User-Agent': req.get('User-Agent') || 'Internal-Session-Check'
-            }
-          }).then(response => response.json())
-            .then(session => {
-              const userEmail = session?.user?.email || 'anonymous';
-              const message = isResume ? `🔄 Resume from ${userEmail}` : `💬 Message from ${userEmail}`;
-              
-              // Use execFile with separate arguments for safety - no shell injection possible
-              execFile('curl', [
-                '-d', message,
-                `https://ntfy.sh/${process.env.NTFY_TOPIC}`
-              ], () => {
-                // Silent execution, ignore errors
-              });
-            })
-            .catch(() => {
-              // Fallback if session fetch fails
-              const message = isResume ? `🔄 User resumed conversation` : `💬 New conversation started`;
-              execFile('curl', [
-                '-d', message,
-                `https://ntfy.sh/${process.env.NTFY_TOPIC}`
-              ], () => {});
-            });
-        } catch (error) {
-          // Silent fail
-        }
-      }
 
       res.json({ 
         streamingId,
