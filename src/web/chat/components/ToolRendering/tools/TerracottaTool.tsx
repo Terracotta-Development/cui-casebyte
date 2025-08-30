@@ -38,7 +38,10 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
   const renderSearchCaseLaw = (data: SearchCaseLawResponse) => (
     <div className="space-y-3">
       <div className="text-sm font-medium">
-        Found {data.result_count} case{data.result_count !== 1 ? 's' : ''} for {data.query}
+        {!data.result_count
+          ? `No cases found for ${data.query}`
+          : `Found ${data.result_count} case${data.result_count !== 1 ? 's' : ''} for ${data.query}`
+        }
       </div>
       <div className="space-y-2">
         {data.results.map((case_result) => (
@@ -95,7 +98,10 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
   const renderSearchOrdinances = (data: SearchOrdinanceResponse) => (
     <div className="space-y-3">
       <div className="text-sm font-medium">
-        Found {data.result_count} ordinance{data.result_count !== 1 ? 's' : ''} for {data.query}
+        {!data.result_count
+          ? `No ordinances found for ${data.query}`
+          : `Found ${data.result_count} ordinance${data.result_count !== 1 ? 's' : ''} for ${data.query}`
+        }
       </div>
       <div className="space-y-2">
         {data.results.map((ordinance) => (
@@ -138,7 +144,10 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
   const renderSearchPracticeDirections = (data: SearchPracticeDirectionsResponse) => (
     <div className="space-y-3">
       <div className="text-sm font-medium">
-        Found {data.result_count} practice direction{data.result_count !== 1 ? 's' : ''} for {data.query}
+        {!data.result_count
+          ? `No practice directions found for ${data.query}`
+          : `Found ${data.result_count} practice direction${data.result_count !== 1 ? 's' : ''} for ${data.query}`
+        }
       </div>
       <div className="space-y-2">
         {data.results.map((pd) => (
