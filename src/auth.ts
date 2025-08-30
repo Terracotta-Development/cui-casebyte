@@ -28,7 +28,7 @@ export const authConfig = {
     redirect({ url, baseUrl }: { url: string, baseUrl: string }) {
       // In development, ensure users are always redirected to frontend (port 3000)
       if (process.env.NODE_ENV === 'development') {
-        const frontendUrl = 'http://localhost:3000'; // update if using a different port.
+        const frontendUrl = 'http://localhost:3001'; // update if using a different port.
 
         // If it's a relative URL, prepend the frontend URL
         if (url.startsWith('/')) {
@@ -41,7 +41,7 @@ export const authConfig = {
         }
         
         // For any other URL, redirect to frontend home
-        return frontendUrl;
+        return `${frontendUrl}/home`;
       }
       
       // Production behavior - use default Auth.js logic
