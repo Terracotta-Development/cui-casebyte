@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/web/chat/components/ui/button';
 import { Input } from '@/web/chat/components/ui/input';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,13 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect to home if already authenticated
+  useEffect(() => {
+    if (!loading && session) {
+      navigate('/home');
+    }
+  }, [session, loading, navigate]);
 
   const handleSubmit = async ( providerId: string) => {
     if (!email.trim()) return;
