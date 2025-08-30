@@ -121,7 +121,7 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
       case 'mcp__terracotta-law__search_ordinances':
         return (
           <>
-            <span className="font-semibold">Searching through ordinances/regulations from HKLII...</span>
+            <span className="font-semibold">Searching through ordinances/regulations</span>
           </>
         );
 
@@ -147,9 +147,26 @@ export function ToolLabel({ toolName, toolInput, workingDirectory, onClick }: To
         );
 
       case 'mcp__terracotta-law__get_case_judgement':
+        const caseId = toolInput?.case_id || '';
+
+        // Formats HKDC_2024_1999 as [2024] HKDC 1999
+        const formatCaseId = (id: string) => {
+          if (!id) return '';
+          const parts = id.split('_');
+          if (parts.length === 3) {
+            const [court, year, number] = parts;
+            return `[${year}] ${court} ${number}`;
+          }
+          return id; // fallback if format doesn't match
+        };
+
+        const formattedCaseId = formatCaseId(caseId);
+
         return (
           <>
-            <span className="font-semibold">Retrieving case judgement from HKLII...</span>
+            <span className="font-semibold">
+              Retrieving judgement {formattedCaseId ? ` for ${formattedCaseId}` : ''}
+            </span>
           </>
         );
 
