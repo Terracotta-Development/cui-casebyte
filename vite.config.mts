@@ -6,6 +6,7 @@ import * as path from 'path'
 
 export default defineConfig({
   root: 'src/web',
+  envDir: '../..',
   define: {
     'process.env.NODE_ENV': JSON.stringify('development'), // or 'production'
   },
