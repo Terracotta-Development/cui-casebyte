@@ -43,21 +43,21 @@ const LoginPage = () => {
     );
   }
 
-  if (session) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-bold">You are already signed in</h1>
-        <Button 
-          size="lg"
-          variant="default"
-          onClick={() => navigate('/home')}
-          className="mt-4"
-        >
-          Go to Home
-        </Button>
-      </div>
-    );
-  }
+  // if (session) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center h-screen">
+  //       <h1 className="text-2xl font-bold">You are already signed in</h1>
+  //       <Button 
+  //         size="lg"
+  //         variant="default"
+  //         onClick={() => navigate('/home')}
+  //         className="mt-4"
+  //       >
+  //         Go to Home
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-background p-6">
