@@ -40,7 +40,7 @@ const SignOutPage = () => {
           <>
             {Object.values(providerMap).map((provider: Provider) => (
               <form onSubmit={handleSubmit} className="space-y-4" key={provider.id}>
-                <div className="space-y-2 text-center italic">
+                <div className="space-y-2 text-center">
                   Are you sure you want to sign out from Casebyte?
                 </div>
                 
