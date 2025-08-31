@@ -40,7 +40,7 @@ export function ConversationHeader({ title, sessionId, isArchived = false, isPin
   }, [title, isRenaming]);
 
   const handleBack = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   const handleArchive = async () => {
@@ -48,7 +48,7 @@ export function ConversationHeader({ title, sessionId, isArchived = false, isPin
     
     try {
       await api.updateSession(sessionId, { archived: !isArchived });
-      navigate('/');
+      navigate('/home');
     } catch (err) {
       console.error(`Failed to ${isArchived ? 'unarchive' : 'archive'} session:`, err);
     }

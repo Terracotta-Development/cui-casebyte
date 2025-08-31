@@ -12,6 +12,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import './styles/global.css';
 import { useAuth } from '../hooks/useAuth';
 import { Button } from './components/ui/button';
+import LandingPage from '@/web/landing/LandingPage';
 
 // Unauthenticated component with login button
 function UnauthenticatedScreen() {
@@ -85,6 +86,12 @@ function ChatApp() {
         <Route path="/signout" element={<SignOutPage />} />
         <Route
           path="/"
+          element={
+            <LandingPage />
+          }
+        />
+        <Route
+          path="/home"
           element={
             isAuthenticated ? (
               <Layout>

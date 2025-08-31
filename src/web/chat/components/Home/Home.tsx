@@ -150,6 +150,7 @@ export function Home() {
                   showModelSelector={false}
                   enableFileAutocomplete={true}
                   recentDirectories={recentDirectories}
+                  showDisclaimer={true}
                   getMostRecentWorkingDirectory={getMostRecentWorkingDirectory}
                   onDirectoryChange={(directory) => {
                     // Focus input after directory change

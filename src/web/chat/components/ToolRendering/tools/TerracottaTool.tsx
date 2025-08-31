@@ -38,7 +38,10 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
   const renderSearchCaseLaw = (data: SearchCaseLawResponse) => (
     <div className="space-y-3">
       <div className="text-sm font-medium">
-        Found {data.result_count} case{data.result_count !== 1 ? 's' : ''} for "{data.query}"
+        {!data.result_count
+          ? `No cases found for ${data.query}`
+          : `Found ${data.result_count} case${data.result_count !== 1 ? 's' : ''} for ${data.query}`
+        }
       </div>
       <div className="space-y-2">
         {data.results.map((case_result) => (
@@ -81,7 +84,7 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
         <div className="text-sm text-muted-foreground">
           <div>{data.neutral_citation}</div>
           <div>{data.court} • {data.date}</div>
-          <div className="mt-1">Length: {data.text_length.toLocaleString()} characters</div>
+          {/* <div className="mt-1">Length: {data.text_length.toLocaleString()} characters</div> */}
         </div>
       </div>
       <div className="bg-neutral-950 rounded-lg p-3 overflow-x-auto">
@@ -95,7 +98,10 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
   const renderSearchOrdinances = (data: SearchOrdinanceResponse) => (
     <div className="space-y-3">
       <div className="text-sm font-medium">
-        Found {data.result_count} ordinance{data.result_count !== 1 ? 's' : ''} for "{data.query}"
+        {!data.result_count
+          ? `No ordinances found for ${data.query}`
+          : `Found ${data.result_count} ordinance${data.result_count !== 1 ? 's' : ''} for ${data.query}`
+        }
       </div>
       <div className="space-y-2">
         {data.results.map((ordinance) => (
@@ -103,7 +109,7 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
             <h4 className="font-medium text-sm">{ordinance.title}</h4>
             <div className="text-xs text-muted-foreground mt-1">
               <div>Chapter {ordinance.chapter_number}: {ordinance.chapter_title}</div>
-              <div>Ingestion Date: {ordinance.ingestion_date}</div>
+              {/* <div>Ingestion Date: {ordinance.ingestion_date}</div> */}
             </div>
             {ordinance.highlights.length > 0 && (
               <div className="mt-2 text-xs">
@@ -123,9 +129,9 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
     <div className="space-y-3">
       <div className="border-b pb-3">
         <h4 className="font-medium">Chapter {data.chapter_number}: {data.chapter_title}</h4>
-        <div className="text-sm text-muted-foreground">
+        {/* <div className="text-sm text-muted-foreground">
           Length: {data.text_length.toLocaleString()} characters
-        </div>
+        </div> */}
       </div>
       <div className="bg-neutral-950 rounded-lg p-3 overflow-x-auto">
         <pre className="text-neutral-100 font-mono text-xs leading-relaxed whitespace-pre-wrap">
@@ -138,7 +144,10 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
   const renderSearchPracticeDirections = (data: SearchPracticeDirectionsResponse) => (
     <div className="space-y-3">
       <div className="text-sm font-medium">
-        Found {data.result_count} practice direction{data.result_count !== 1 ? 's' : ''} for "{data.query}"
+        {!data.result_count
+          ? `No practice directions found for ${data.query}`
+          : `Found ${data.result_count} practice direction${data.result_count !== 1 ? 's' : ''} for ${data.query}`
+        }
       </div>
       <div className="space-y-2">
         {data.results.map((pd) => (
@@ -182,7 +191,7 @@ export function TerracottaTool({ toolName, input, result }: TerracottaToolProps)
         <div className="text-sm text-muted-foreground">
           <div>PD No: {data.pd_no} {data.parent_pd_no && `(Parent: ${data.parent_pd_no})`}</div>
           <div>Category: {data.category} {data.is_appendix && '• Appendix'}</div>
-          <div>File Size: {(data.file_size / 1024).toFixed(1)} KB • Length: {data.content_length.toLocaleString()} characters</div>
+          {/* <div>File Size: {(data.file_size / 1024).toFixed(1)} KB • Length: {data.content_length.toLocaleString()} characters</div> */}
         </div>
       </div>
       <div className="bg-neutral-950 rounded-lg p-3 overflow-x-auto">

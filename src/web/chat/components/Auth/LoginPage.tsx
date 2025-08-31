@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/web/chat/components/ui/button';
 import { Input } from '@/web/chat/components/ui/input';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,13 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+
+  // Redirect to home if already authenticated
+  useEffect(() => {
+    if (!loading && session) {
+      navigate('/home');
+    }
+  }, [session, loading, navigate]);
 
   const handleSubmit = async ( providerId: string) => {
     if (!email.trim()) return;
@@ -36,21 +43,21 @@ const LoginPage = () => {
     );
   }
 
-  if (session) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-bold">You are already signed in</h1>
-        <Button 
-          size="lg"
-          variant="default"
-          onClick={() => navigate('/')}
-          className="mt-4"
-        >
-          Go to Home
-        </Button>
-      </div>
-    );
-  }
+  // if (session) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center h-screen">
+  //       <h1 className="text-2xl font-bold">You are already signed in</h1>
+  //       <Button 
+  //         size="lg"
+  //         variant="default"
+  //         onClick={() => navigate('/home')}
+  //         className="mt-4"
+  //       >
+  //         Go to Home
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-background p-6">
