@@ -256,7 +256,7 @@ const LandingPage = () => {
               </div>
               <h3 className="font-bold text-xl mb-4 text-gray-900 group-hover:text-blue-700 transition-colors">Ask Like You Would a Colleague</h3>
               <p className="text-gray-600 leading-relaxed font-medium">
-                No complex Boolean strings. Describe your legal issue in plain English and get precise results from HKLII databases.
+                No complex Boolean strings. Describe your Hong Kong legal issue in plain English and get precise results grounded in real case law.
               </p>
             </div>
 
