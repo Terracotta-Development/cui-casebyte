@@ -475,8 +475,12 @@ export class CUIServer {
 
   private setupRoutes(): void {
     // System routes (includes health check) - before auth
-    this.app.use('/api/system', createSystemRoutes(this.processManager, this.historyReader));
-    this.app.use('/', createSystemRoutes(this.processManager, this.historyReader)); // For /health at root
+    // Only enable in development, disable all system routes in production
+    const isDev = process.env.NODE_ENV === 'development';
+    if (isDev) {
+      this.app.use('/api/system', createSystemRoutes(this.processManager, this.historyReader));
+      this.app.use('/', createSystemRoutes(this.processManager, this.historyReader)); // For /health at root
+    }
     
     // Permission routes - before auth (needed for MCP server communication)
     this.app.use('/api/permissions', createPermissionRoutes(this.permissionTracker));
@@ -506,18 +510,22 @@ export class CUIServer {
       this.conversationStatusManager,
       this.toolMetricsService
     ));
-    this.app.use('/api/filesystem', createFileSystemRoutes(this.fileSystemService));
-    this.app.use('/api/logs', createLogRoutes());
+    // Disable sensitive routes in production
+    if (isDev) {
+      this.app.use('/api/filesystem', createFileSystemRoutes(this.fileSystemService));
+      this.app.use('/api/logs', createLogRoutes());
+      this.app.use('/api/working-directories', createWorkingDirectoriesRoutes(this.workingDirectoriesService));
+      this.app.use('/api/config', createConfigRoutes(this.configService));
+    }
+    
+    // Keep streaming routes as they're needed for the application to function
     this.app.use('/api/stream', createStreamingRoutes(this.streamManager));
-    this.app.use('/api/working-directories', createWorkingDirectoriesRoutes(this.workingDirectoriesService));
-    this.app.use('/api/config', createConfigRoutes(this.configService));
     this.app.use('/api/gemini', createGeminiRoutes(geminiService));
     
     // React Router catch-all - must be after all API routes
-    const isDev = process.env.NODE_ENV === 'development';
     if (!isDev) {
       // In production/test, serve index.html for all non-API routes
-      this.app.get('*', (req, res) => {
+      this.app.get('*', (_req, res) => {
         res.sendFile(path.join(__dirname, 'web', 'index.html'));
       });
     }
