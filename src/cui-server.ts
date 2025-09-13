@@ -510,12 +510,12 @@ export class CUIServer {
       this.conversationStatusManager,
       this.toolMetricsService
     ));
-    // Disable sensitive routes in production
+    // Disable sensitive routes in production (keep config for Claude Code MCP integration)
+    this.app.use('/api/config', createConfigRoutes(this.configService));
     if (isDev) {
       this.app.use('/api/filesystem', createFileSystemRoutes(this.fileSystemService));
       this.app.use('/api/logs', createLogRoutes());
       this.app.use('/api/working-directories', createWorkingDirectoriesRoutes(this.workingDirectoriesService));
-      this.app.use('/api/config', createConfigRoutes(this.configService));
     }
     
     // Keep streaming routes as they're needed for the application to function
