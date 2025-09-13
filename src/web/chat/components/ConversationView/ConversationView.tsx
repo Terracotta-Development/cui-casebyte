@@ -303,12 +303,13 @@ export function ConversationView() {
             onStop={handleStop}
             onPermissionDecision={handlePermissionDecision}
             isLoading={isConnected || isPermissionDecisionLoading}
-            placeholder="Continue the conversation..."
+            placeholder="Ask a follow up question..."
             permissionRequest={currentPermissionRequest}
             showPermissionUI={true}
             showStopButton={true}
-            enableFileAutocomplete={true}
+            enableFileAutocomplete={false}
             dropdownPosition="above"
+            // showDisclaimer={true}
             workingDirectory={conversationSummary?.projectPath}
             onFetchFileSystem={async (directory) => {
               try {
