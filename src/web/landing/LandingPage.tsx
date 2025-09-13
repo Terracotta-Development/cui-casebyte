@@ -383,7 +383,7 @@ const LandingPage = () => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-24 bg-gray-50">
+      {/* <section className="py-24 bg-gray-50">
         <div className="container mx-auto px-6">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
@@ -471,7 +471,7 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Final CTA Section */}
       <section className="py-24 bg-[var(--primary)] text-[var(--primary-foreground)]">
@@ -495,7 +495,7 @@ const LandingPage = () => {
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-0">
             <div>
-              <p className="text-sm font-medium opacity-80 m-0">© 2025 Terracotta. All rights reserved.</p>
+              <p className="text-sm font-medium opacity-80 m-0">© 2025 Casebyte. All rights reserved.</p>
             </div>
             <div className="flex gap-8">
               <button 
@@ -535,8 +535,8 @@ const LandingPage = () => {
           </section>
 
           <section>
-            <h3 className="font-semibold text-base mb-2">How We Use Your Information</h3>
-            <p>We use the information we collect to provide, maintain, and improve our legal research services, process transactions, and communicate with you.</p>
+            <h3 className="font-semibold text-base mb-2">Data Privacy</h3>
+            <p>The data you provide to Casebyte is not used for model training.</p>
           </section>
 
           <section>
@@ -546,7 +546,7 @@ const LandingPage = () => {
 
           <section>
             <h3 className="font-semibold text-base mb-2">Data Security</h3>
-            <p>We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+            <p>We implement security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
           </section>
         </div>
       </Modal>
@@ -578,7 +578,7 @@ const LandingPage = () => {
 
           <section>
             <h3 className="font-semibold text-base mb-2">Limitation of Liability</h3>
-            <p>In no event shall Terracotta or its suppliers be liable for any damages arising out of the use or inability to use Casebyte.</p>
+            <p>In no event shall Casebyte or its suppliers be liable for any damages arising out of the use or inability to use Casebyte.</p>
           </section>
         </div>
       </Modal>
@@ -601,9 +601,9 @@ const LandingPage = () => {
                 support@casebyte.ai
               </a>
             </p>
-            <p className="text-[var(--muted-foreground)] text-sm mt-1">
+            {/* <p className="text-[var(--muted-foreground)] text-sm mt-1">
               We typically respond within 48 hours during business days.
-            </p>
+            </p> */}
           </section>
         </div>
       </Modal>
