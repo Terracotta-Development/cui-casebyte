@@ -148,7 +148,7 @@ export function Home() {
                   placeholder="Describe your legal query here"
                   showDirectorySelector={true}
                   showModelSelector={false}
-                  enableFileAutocomplete={true}
+                  enableFileAutocomplete={false}
                   recentDirectories={recentDirectories}
                   showDisclaimer={true}
                   getMostRecentWorkingDirectory={getMostRecentWorkingDirectory}
