@@ -681,7 +681,7 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
     // For Home usage with directory/model
     if (showDirectorySelector && selectedDirectory === 'Select directory') return;
 
-    // Capture PostHog event with the prompt
+    // Capture PostHog event with the prompt (user already identified in Home component)
     posthog?.capture('ask_button_clicked', {
       prompt: trimmedValue,
       user_email: user?.email,

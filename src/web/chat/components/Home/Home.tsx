@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useConversations } from '../../contexts/ConversationsContext';
 import { api } from '../../services/api';
 import { Composer, ComposerRef } from '@/web/chat/components/Composer';
+import { usePostHog } from 'posthog-js/react';
+import { useAuth } from '../../../../web/hooks/useAuth';
 
 export function Home() {
   const navigate = useNavigate();
+  const posthog = usePostHog();
+  const { user, loading: authLoading } = useAuth();
   const { 
     conversations, 
     loading, 
@@ -41,7 +45,15 @@ export function Home() {
     }
   };
 
-  // Auto-refresh on navigation back to Home
+  // Initialize PostHog identify when user becomes available
+  useEffect(() => {
+    // Only attempt identification when auth is not loading and user exists
+    if (!authLoading && user?.email) {
+      posthog?.identify(user.email, { email: user.email });
+    }
+  }, [user, authLoading, posthog]);
+
+  // Setup component on mount
   useEffect(() => {
     // Refresh on component mount if we have conversations
     if (conversationCountRef.current > 0) {
