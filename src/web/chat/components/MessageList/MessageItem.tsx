@@ -71,6 +71,24 @@ const markdownComponents = {
         {children}
       </code>
     );
+  },
+  a({ href, children, ...props }: any) {
+    // Check if it's an HKLII link
+    if (href && href.includes('hklii.hk')) {
+      return (
+        <a 
+          href={href} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 underline decoration-gray-400 hover:decoration-gray-600"
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    }
+    // Default behavior for other links
+    return <a href={href} {...props}>{children}</a>;
   }
 };
 
