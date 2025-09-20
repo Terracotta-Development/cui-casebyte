@@ -487,6 +487,14 @@ export class CUIServer {
     // Notifications routes - before auth (needed for service worker subscription on first load)
     this.app.use('/api/notifications', createNotificationsRoutes(this.webPushService));
     
+    // Handle disabled routes in production - before auth to prevent 401 errors
+    if (!isDev) {
+      this.app.use('/api/filesystem*', (_req, res) => res.status(404).json({ error: 'Route disabled in production' }));
+      this.app.use('/api/logs*', (_req, res) => res.status(404).json({ error: 'Route disabled in production' }));
+      this.app.use('/api/working-directories*', (_req, res) => res.status(404).json({ error: 'Route disabled in production' }));
+      this.app.use('/api/system*', (_req, res) => res.status(404).json({ error: 'Route disabled in production' }));
+    }
+    
     // Apply auth middleware to all other API routes unless skipAuthToken is set
     if (!this.configOverrides?.skipAuthToken) {
       if (this.configOverrides?.token) {
@@ -510,8 +518,10 @@ export class CUIServer {
       this.conversationStatusManager,
       this.toolMetricsService
     ));
-    // Disable sensitive routes in production (keep config for Claude Code MCP integration)
+    // Config routes are needed for Claude Code MCP integration
     this.app.use('/api/config', createConfigRoutes(this.configService));
+    
+    // Enable sensitive routes only in development
     if (isDev) {
       this.app.use('/api/filesystem', createFileSystemRoutes(this.fileSystemService));
       this.app.use('/api/logs', createLogRoutes());
