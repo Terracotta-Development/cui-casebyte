@@ -102,3 +102,7 @@ jspm_packages/
 
 # Git worktrees
 cc-worktrees/
+
+# Other project files
+licensing/
+*.bak
