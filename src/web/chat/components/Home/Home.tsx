@@ -157,7 +157,7 @@ export function Home() {
                   workingDirectory={recentWorkingDirectory}
                   onSubmit={handleComposerSubmit}
                   isLoading={isSubmitting}
-                  placeholder="Describe your legal query here"
+                  placeholder="How can I help you today?"
                   showDirectorySelector={true}
                   showModelSelector={false}
                   enableFileAutocomplete={false}
