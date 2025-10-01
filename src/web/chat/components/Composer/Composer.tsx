@@ -11,8 +11,6 @@ import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { useAudioRecording } from '../../hooks/useAudioRecording';
 import { api } from '../../../chat/services/api';
 import { cn } from "../../lib/utils";
-import { usePostHog } from 'posthog-js/react';
-import { useAuth } from '../../../../web/hooks/useAuth';
 
 export interface FileSystemEntry {
   name: string;
@@ -324,8 +322,6 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
   availableCommands = [],
   onFetchCommands,
 }: ComposerProps, ref: React.Ref<ComposerRef>) {
-  const posthog = usePostHog();
-  const { user } = useAuth();
   // Load cached state
   const [cachedState, setCachedState] = useLocalStorage<ComposerCache>('cui-composer', {
     selectedPermissionMode: 'bypassPermissions',
@@ -681,11 +677,6 @@ export const Composer = forwardRef<ComposerRef, ComposerProps>(function Composer
     // For Home usage with directory/model
     if (showDirectorySelector && selectedDirectory === 'Select directory') return;
 
-    // Capture PostHog event with the prompt (user already identified in Home component)
-    posthog?.capture('ask_button_clicked', {
-      prompt: trimmedValue,
-      user_email: user?.email,
-    });
 
     onSubmit(
       trimmedValue,

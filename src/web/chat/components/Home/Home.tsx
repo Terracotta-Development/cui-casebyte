@@ -5,11 +5,13 @@ import { api } from '../../services/api';
 import { Composer, ComposerRef } from '@/web/chat/components/Composer';
 import { usePostHog } from 'posthog-js/react';
 import { useAuth } from '../../../../web/hooks/useAuth';
+import { usePostHogTracking } from '../../hooks/usePostHogTracking';
 
 export function Home() {
   const navigate = useNavigate();
   const posthog = usePostHog();
   const { user, loading: authLoading } = useAuth();
+  const { trackConversation } = usePostHogTracking();
   const { 
     conversations, 
     loading, 
@@ -116,6 +118,9 @@ export function Home() {
         model: model === 'default' ? undefined : model,
         permissionMode: permissionMode === 'default' ? undefined : permissionMode,
       });
+      
+      // Track conversation with PostHog including the sessionId
+      trackConversation(text, response.sessionId);
       
       // Navigate to the conversation page
       navigate(`/c/${response.sessionId}`);

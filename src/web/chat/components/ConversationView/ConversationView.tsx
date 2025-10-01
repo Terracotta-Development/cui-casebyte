@@ -5,12 +5,14 @@ import { Composer, ComposerRef } from '@/web/chat/components/Composer';
 import { ConversationHeader } from '../ConversationHeader/ConversationHeader';
 import { api } from '../../services/api';
 import { useStreaming, useConversationMessages } from '../../hooks';
+import { usePostHogTracking } from '../../hooks/usePostHogTracking';
 import type { ChatMessage, ConversationDetailsResponse, ConversationMessage, ConversationSummary } from '../../types';
 
 export function ConversationView() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
+  const { trackConversation } = usePostHogTracking();
   const [streamingId, setStreamingId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -168,6 +170,9 @@ export function ConversationView() {
         model,
         permissionMode
       });
+
+      // Track conversation with PostHog including the sessionId
+      trackConversation(message, response.sessionId);
 
       // Navigate immediately to the new session
       navigate(`/c/${response.sessionId}`);
